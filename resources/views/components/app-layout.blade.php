@@ -31,7 +31,7 @@
                             </svg>
                         </button>
 
-                        <!-- Dropdown menu -->
+                        <!--TODO Dropdown menu -->
                         <div id="dropdownInformation"
                             class="absolute z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600">
 
@@ -93,7 +93,7 @@
     </footer>
 
 
-
+    <!--TODO Script Dropdown menu -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const dropdownButton = document.getElementById('dropdownInformationButton');

@@ -8,7 +8,11 @@ Route::get('/login', [SessionController::class, 'index'])->middleware("guest");
 
 Route::get('/', function () {
     return view('index');
-})->middleware(Auth::class);
+});
+
+Route::get('/register', function () {
+    return view('register');
+})->middleware("guest");
 
 
 Route::post('/login', [SessionController::class, 'store'])->middleware("guest");
