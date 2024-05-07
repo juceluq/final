@@ -18,9 +18,54 @@
         <div class="container mx-auto flex justify-between items-center px-6">
             <h1 class="text-xl font-bold text-gray-700 dark:text-gray-300">ReservaSphere</h1>
             <div class="flex">
-                <a href="/login" class="text-white font-medium rounded-lg text-xl pr-10 py-2.5">
-                    Login
-                </a>
+                @if (auth()->check())
+                    <div class="relative inline-block text-left">
+                        <button id="dropdownInformationButton" data-dropdown-toggle="dropdownInformation"
+                            class="text-gray-700 dark:text-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center"
+                            type="button">
+                            {{ auth()->user()->username }}
+                            <svg class="w-2.5 h-2.5 ml-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                fill="none" viewBox="0 0 10 6">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                    stroke-width="2" d="m1 1 4 4 4-4" />
+                            </svg>
+                        </button>
+
+                        <!-- Dropdown menu -->
+                        <div id="dropdownInformation"
+                            class="absolute z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600">
+
+                            <div class="px-4 py-3 text-sm text-gray-700 dark:text-gray-300">
+                                <div>{{ auth()->user()->name }}</div>
+                                <div class="font-medium truncate">{{ auth()->user()->email }}</div>
+                            </div>
+                            <ul class="py-2 text-sm text-gray-700 dark:text-gray-200"
+                                aria-labelledby="dropdownInformationButton">
+                                <li>
+                                    <a href="#"
+                                        class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Dashboard</a>
+                                </li>
+                                <li>
+                                    <a href="#"
+                                        class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Settings</a>
+                                </li>
+                                <li>
+                                    <a href="#"
+                                        class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Earnings</a>
+                                </li>
+                            </ul>
+                            <div class="py-2">
+                                <form action="/logout" method="post">@csrf<button type="submit"
+                                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Logout</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                @else
+                    <a href="/login"
+                        class="text-gray-700 dark:text-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 inline-flex items-center">Login</a>
+                @endif
+
                 <button id="theme-toggle" type="button"
                     class=" w-10 h-10 bg-blue-500 dark:bg-blue-700 rounded-full shadow flex items-center justify-center text-white focus:outline-none focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-800 transition-all">
                     <svg id="theme-toggle-dark-icon" class="hidden w-6 h-6" fill="currentColor" viewBox="0 0 20 20"
@@ -46,6 +91,26 @@
             </p>
         </div>
     </footer>
+
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const dropdownButton = document.getElementById('dropdownInformationButton');
+            const dropdownMenu = document.getElementById('dropdownInformation');
+
+            dropdownButton.addEventListener('click', function(event) {
+                dropdownMenu.classList.toggle('hidden');
+            });
+
+            window.addEventListener('click', function(e) {
+                if (!dropdownButton.contains(e.target) && !dropdownMenu.contains(e.target)) {
+                    dropdownMenu.classList.add('hidden');
+                }
+            });
+        });
+    </script>
+
 </body>
 
 </html>
