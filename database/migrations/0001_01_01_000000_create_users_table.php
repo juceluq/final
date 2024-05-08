@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->enum('role', ['client', 'business', 'admin']);
+            $table->enum('role', ['Client', 'Business', 'Admin']);
             $table->timestamps();
         });
         Schema::create('sessions', function (Blueprint $table) {
