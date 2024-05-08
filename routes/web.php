@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\EstablishmentController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\SessionController;
 use Illuminate\Support\Facades\Route;
@@ -17,11 +18,12 @@ Route::post('/logout', [SessionController::class, 'destroy'])->middleware('auth'
 
 Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register.form')->middleware("guest");
 Route::post('/register', [RegisterController::class, 'register'])->name('register');
+Route::get('/establishments/create', [EstablishmentController::class, 'create'])->name('establishments.create')->middleware('auth');
+Route::post('/establishments', [EstablishmentController::class, 'store'])->name('establishments.store')->middleware('auth');
+Route::get('/establishments', [EstablishmentController::class, 'index'])->name('establishments.index');
 
 Route::get('/email/verify', function () {
     return view('auth.verify');
 })->middleware('auth')->name('verification.notice');
 
-Route::get('/', function () {
-    return view('index');
-});
+Route::get('/', [EstablishmentController::class, 'index'])->name('index');

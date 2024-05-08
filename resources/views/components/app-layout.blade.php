@@ -31,6 +31,15 @@
                                     d="m1 1 4 4 4-4" />
                             </svg>
                         </button>
+                        @if (Auth::user()->role == 'Admin' || Auth::user()->role == 'Business')
+                            <a href="/establishments/create"
+                                class="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-purple-600 to-blue-500 group-hover:from-purple-600 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800">
+                                <span
+                                    class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
+                                    Create
+                                </span>
+                            </a>
+                        @endif
                         <div id="dropdownInformation"
                             class="absolute z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600">
                             <div class="px-4 py-3 text-sm text-gray-700 dark:text-gray-300">
@@ -60,7 +69,8 @@
                         class="text-gray-700 dark:text-gray-300 font-bold rounded-lg text-lg px-5 inline-flex items-center">Login</a>
                 @endauth
                 <button id="theme-toggle" type="button"
-                    class=" w-10 h-10 bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 rounded-full shadow flex items-center justify-center text-white transition-all">
+                    class="w-10 h-10 bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 rounded-full shadow flex items-center justify-center text-white transition-all">
+                    <!-- Icons toggled based on dark/light mode -->
                     <svg id="theme-toggle-dark-icon" class="hidden w-6 h-6" fill="currentColor" viewBox="0 0 20 20"
                         xmlns="http://www.w3.org/2000/svg">
                         <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
@@ -73,6 +83,7 @@
                     </svg>
                 </button>
             </div>
+        </div>
     </header>
 
     <div class="flex-grow container mx-auto my-6 px-6">
