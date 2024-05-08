@@ -12,16 +12,16 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body class="bg-blue-50 dark:bg-slate-900">
+<body class="flex flex-col min-h-screen bg-blue-50 dark:bg-slate-900">
 
-    <header class="bg-white dark:bg-gray-900 py-4 shadow">
+    <header class="bg-white dark:bg-gray-900 py-4 shadow m-4 rounded-lg">
         <div class="container mx-auto flex justify-between items-center px-6">
-            <h1 class="text-xl font-bold text-gray-700 dark:text-gray-300">ReservaSphere</h1>
+            <a class="text-xl font-bold text-gray-700 dark:text-gray-300" href="/">ReservaSphere</a>
             <div class="flex">
                 @if (auth()->check())
                     <div class="relative inline-block text-left">
                         <button id="dropdownInformationButton" data-dropdown-toggle="dropdownInformation"
-                            class="text-gray-700 dark:text-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center"
+                            class="text-gray-700 dark:text-gray-300 font-bold rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center"
                             type="button">
                             {{ auth()->user()->username }}
                             <svg class="w-2.5 h-2.5 ml-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
@@ -63,11 +63,11 @@
                     </div>
                 @else
                     <a href="/login"
-                        class="text-gray-700 dark:text-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 inline-flex items-center">Login</a>
+                        class="text-gray-700 dark:text-gray-300 font-bold rounded-lg text-lg px-5 inline-flex items-center">Login</a>
                 @endif
 
                 <button id="theme-toggle" type="button"
-                    class=" w-10 h-10 bg-blue-500 dark:bg-blue-700 rounded-full shadow flex items-center justify-center text-white focus:outline-none focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-800 transition-all">
+                    class=" w-10 h-10 bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 rounded-full shadow flex items-center justify-center text-white transition-all">
                     <svg id="theme-toggle-dark-icon" class="hidden w-6 h-6" fill="currentColor" viewBox="0 0 20 20"
                         xmlns="http://www.w3.org/2000/svg">
                         <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
@@ -82,15 +82,31 @@
             </div>
     </header>
 
-    <div class="container mx-auto my-6">{{ $slot }}</div>
+    <div class="flex-grow container mx-auto my-6 px-6">{{ $slot }}</div>
 
-
-    <footer class="bg-white dark:bg-gray-900 py-4 shadow mt-6">
-        <div class="container mx-auto px-6">
-            <p class="text-center text-gray-500 dark:text-gray-400 text-sm">© 2024 ReservaSphere. All rights reserved.
-            </p>
+    <footer class="bg-white rounded-lg shadow m-4 dark:bg-gray-900">
+        <div class="w-full mx-auto max-w-screen-xl p-4 md:flex md:items-center md:justify-between">
+            <span class="text-sm text-gray-500 sm:text-center dark:text-gray-400">© 2024 <a href="/"
+                    class="hover:underline">ReservaSphere™</a>. All Rights Reserved.
+            </span>
+            <ul class="flex flex-wrap items-center mt-3 text-sm font-medium text-gray-500 dark:text-gray-400 sm:mt-0">
+                <li>
+                    <a href="#" class="hover:underline me-4 md:me-6">About</a>
+                </li>
+                <li>
+                    <a href="#" class="hover:underline me-4 md:me-6">Privacy Policy</a>
+                </li>
+                <li>
+                    <a href="#" class="hover:underline me-4 md:me-6">Licensing</a>
+                </li>
+                <li>
+                    <a href="#" class="hover:underline">Contact</a>
+                </li>
+            </ul>
         </div>
     </footer>
+
+
 
 
     <!--TODO Script Dropdown menu -->
