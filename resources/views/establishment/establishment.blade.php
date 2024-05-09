@@ -1,24 +1,29 @@
 <x-app-layout>
     <div class="bg-white dark:bg-gray-900 overflow-hidden shadow-sm sm:rounded-lg p-6">
-        <div class="flex justify-between items-center mb-4">
-            <h2 class="text-2xl font-bold text-gray-700 dark:text-gray-300">{{ $establishment->name }}</h2>
-            <span class="bg-indigo-600 text-purple-200 text-lg font-semibold px-4 py-2 rounded-full shadow">
+        <div class="flex justify-between items-center mb-4 relative z-10">
+            <h2
+                class="text-2xl font-bold text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-900 px-4 py-2 rounded-lg shadow-lg">
+                {{ $establishment->name }}
+            </h2>
+            <span class="bg-indigo-600 text-purple-200 text-lg font-semibold px-4 py-2 rounded-full shadow-lg">
                 {{ number_format($establishment->price, 2) }}€
             </span>
         </div>
         <div class="flex flex-wrap md:flex-nowrap">
             <div class="w-full md:w-1/3">
                 <img src="{{ $establishment->image ? asset('storage/' . $establishment->image) : asset('storage/default.jpg') }}"
-                    alt="{{ $establishment->name }}" class="w-full h-auto my-4">
+                    alt="{{ $establishment->name }}" class="w-full h-auto my-4 rounded-3xl">
             </div>
 
             <div class="w-full md:w-2/3 md:pl-6">
-                <p class="text-lg font-semibold text-gray-700 dark:text-gray-300">Location:</p>
-                <p class="text-gray-700 dark:text-gray-300">{{ $establishment->location }}</p>
-                <p class="text-lg font-semibold mt-4 text-gray-700 dark:text-gray-300">Category:</p>
-                <p class="text-gray-700 dark:text-gray-300">{{ $establishment->category }}</p>
-                <p class="text-lg font-semibold mt-4 text-gray-700 dark:text-gray-300">Description:</p>
-                <p class="mt-4 text-gray-700 dark:text-gray-300">{{ $establishment->description }}</p>
+                <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md">
+                    <p class="text-lg font-semibold text-gray-700 dark:text-gray-300">Location:</p>
+                    <p class="text-gray-700 dark:text-gray-300 mb-4">{{ $establishment->location }}</p>
+                    <p class="text-lg font-semibold text-gray-700 dark:text-gray-300">Category:</p>
+                    <p class="text-gray-700 dark:text-gray-300 mb-4">{{ $establishment->category }}</p>
+                    <p class="text-lg font-semibold text-gray-700 dark:text-gray-300">Description:</p>
+                    <p class="mt-4 text-gray-700 dark:text-gray-300">{{ $establishment->description }}</p>
+                </div>
 
                 @if (Auth::user()?->role === 'Admin' || Auth::user()?->role === 'Client')
                     {{-- TODO date range picker --}}

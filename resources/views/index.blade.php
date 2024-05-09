@@ -28,7 +28,7 @@
                                 {{ number_format($establishment->price, 2) }}€
                             </span>
                             <img src="{{ $establishment->image ? asset('storage/' . $establishment->image) : asset('storage/default.jpg') }}"
-                                alt="{{ $establishment->name }}" class="w-full h-full object-cover shadow-lg">
+                                alt="{{ $establishment->name }}" class="w-full h-full object-cover shadow-lg rounded-lg">
                         </div>
                         <div class="flex flex-col justify-between p-4 leading-normal">
                             @foreach (split_title($establishment->name, 9) as $line)
