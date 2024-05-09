@@ -4,19 +4,20 @@
             @foreach ($establishments as $establishment)
                 <div class="relative group">
                     @if (auth()->check() && (Auth::user()->role === 'Admin' || Auth::user()->role === 'Business'))
-                        <form method="POST" action="{{ route('establishments.destroy', $establishment) }}"
-                            onsubmit="return confirm('Are you sure you want to delete this establishment?');">
+                        <button type="button" onclick="confirmDelete(this)"
+                            data-form-id="delete-form-{{ $establishment->id }}"
+                            class="absolute right-2 top-2 hidden group-hover:flex justify-center items-center bg-red-500 text-white rounded-full w-10 h-10">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                class="w-6 h-6">
+                                <line x1="18" y1="6" x2="6" y2="18"></line>
+                                <line x1="6" y1="6" x2="18" y2="18"></line>
+                            </svg>
+                        </button>
+                        <form id="delete-form-{{ $establishment->id }}" method="POST"
+                            action="{{ route('establishments.destroy', $establishment) }}" style="display:none;">
                             @csrf
                             @method('DELETE')
-                            <button type="submit"
-                                class="absolute right-2 top-2 hidden group-hover:flex justify-center items-center bg-red-500 text-white rounded-full w-10 h-10">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-                                    stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                    stroke-linejoin="round" class="w-6 h-6">
-                                    <line x1="18" y1="6" x2="6" y2="18"></line>
-                                    <line x1="6" y1="6" x2="18" y2="18"></line>
-                                </svg>
-                            </button>
                         </form>
                     @endif
                     <a href="{{ $url ?? '#' }}"

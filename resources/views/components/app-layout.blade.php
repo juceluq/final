@@ -101,6 +101,7 @@
         </div>
     </footer>
 
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const dropdownButton = document.getElementById('dropdownInformationButton');
@@ -116,6 +117,39 @@
                 }
             });
         });
+
+        function confirmDelete(button) {
+            const formId = button.getAttribute('data-form-id');
+            const form = document.getElementById(formId);
+            const prefersDarkMode = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+            const swalOptions = {
+                title: '¿Estás seguro?',
+                text: "No podrás revertir esto!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Sí, bórralo!',
+                cancelButtonText: 'Cancelar',
+            };
+
+
+            if (prefersDarkMode) {
+                swalOptions.background = '#1f2937';
+                swalOptions.color = '#ffffff';
+                swalOptions.confirmButtonColor = '#388e3c';
+                swalOptions.cancelButtonColor = '#d32f2f';
+                swalOptions.iconColor = '#ffffff';
+            } else {
+                swalOptions.confirmButtonColor = '#3085d6';
+                swalOptions.cancelButtonColor = '#d33';
+            }
+
+            Swal.fire(swalOptions).then((result) => {
+                if (result.isConfirmed) {
+                    form.submit();
+                }
+            });
+        }
     </script>
 
 </body>
