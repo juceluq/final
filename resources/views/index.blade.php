@@ -20,9 +20,13 @@
                             @method('DELETE')
                         </form>
                     @endif
-                    <a href="{{ $url ?? '#' }}"
+                    <a href="{{ route('establishments.show', $establishment->id) }}"
                         class="flex flex-col items-center bg-white border border-gray-300 rounded-lg shadow-lg hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700 md:flex-row md:max-w-xl overflow-hidden">
                         <div class="w-full md:w-48 md:h-48 relative">
+                            <span
+                                class="absolute top-2 left-2 bg-white bg-opacity-90 rounded-full px-3 py-1 text-xs font-semibold text-gray-900 shadow">
+                                {{ number_format($establishment->price, 2) }}€
+                            </span>
                             <img src="{{ $establishment->image ? asset('storage/' . $establishment->image) : asset('storage/default.jpg') }}"
                                 alt="{{ $establishment->name }}" class="w-full h-full object-cover shadow-lg">
                         </div>

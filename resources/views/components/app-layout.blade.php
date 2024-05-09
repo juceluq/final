@@ -102,6 +102,7 @@
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/datepicker.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const dropdownButton = document.getElementById('dropdownInformationButton');
@@ -150,6 +151,13 @@
                 }
             });
         }
+
+        document.getElementById('price').addEventListener('input', function(e) {
+            var value = e.target.value;
+            if (value.indexOf('.') >= 0 && value.split('.')[1].length > 2) {
+                e.target.value = parseFloat(value).toFixed(2);
+            }
+        });
     </script>
 
 </body>

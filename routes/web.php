@@ -20,8 +20,9 @@ Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->na
 Route::post('/register', [RegisterController::class, 'register'])->name('register');
 Route::get('/establishments/create', [EstablishmentController::class, 'create'])->name('establishments.create')->middleware('auth');
 Route::post('/establishments', [EstablishmentController::class, 'store'])->name('establishments.store')->middleware('auth');
-Route::get('/establishments', [EstablishmentController::class, 'index'])->name('establishments.index');
+/* Route::get('/establishments', [EstablishmentController::class, 'index'])->name('establishments.index');*/
 Route::delete('/establishments/{establishment}', [EstablishmentController::class, 'destroy'])->middleware('auth')->name('establishments.destroy');
+Route::get('/establishments/{establishment}', [EstablishmentController::class, 'show'])->name('establishments.show');
 
 Route::get('/email/verify', function () {
     return view('auth.verify');

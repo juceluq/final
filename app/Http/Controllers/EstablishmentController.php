@@ -15,6 +15,13 @@ class EstablishmentController extends Controller
         return view('index', compact('establishments'));
     }
 
+    public function show($id)
+    {
+        $establishment = Establishment::findOrFail($id);
+        return view('establishment', compact('establishment'));
+    }
+
+
     public function create()
     {
         return view('create');
@@ -27,8 +34,10 @@ class EstablishmentController extends Controller
             'description' => 'required|string',
             'location' => 'required|string',
             'category' => 'required|string',
+            'price' => 'required|numeric',
             'image' => 'sometimes|file|image|max:5000',
         ]);
+
 
         if ($request->hasFile('image')) {
             $validated['image'] = $request->file('image')->store('images', 'public');
