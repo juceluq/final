@@ -38,19 +38,22 @@ class EstablishmentController extends Controller
             'image' => 'sometimes|file|image|max:5000',
         ]);
 
-
-        if ($request->hasFile('image')) {
-            $validated['image'] = $request->file('image')->store('images', 'public');
-        } else {
-            $validated['image'] = 'images/default.jpg';
-        }
-
+        $validated['image'] = 'images/default.jpg';
         $validated['user_id'] = auth()->id();
 
         $establishment = Establishment::create($validated);
 
+        if ($request->hasFile('image')) {
+            $newFileName = 'IMG_' . $establishment->id . '.' . $request->file('image')->extension();
+            $path = $request->file('image')->storeAs('images', $newFileName, 'public');
+
+            $establishment->image = $path;
+            $establishment->save();
+        }
+
         return redirect()->route('index')->with('success', 'Establishment created successfully!');
     }
+
 
     public function destroy(Establishment $establishment)
     {
