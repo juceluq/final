@@ -9,8 +9,6 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>ReservaSphere</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="../resources/app.js"></script>
-    <link rel="stylesheet" href="../resources/css/app.css">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 

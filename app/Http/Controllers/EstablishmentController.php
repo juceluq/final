@@ -33,7 +33,7 @@ class EstablishmentController extends Controller
         if ($request->hasFile('image')) {
             $validated['image'] = $request->file('image')->store('images', 'public');
         } else {
-            $validated['image'] = 'images/default.jpg';  
+            $validated['image'] = 'images/default.jpg';
         }
 
         $validated['user_id'] = auth()->id();
@@ -41,5 +41,15 @@ class EstablishmentController extends Controller
         $establishment = Establishment::create($validated);
 
         return redirect()->route('index')->with('success', 'Establishment created successfully!');
+    }
+
+    public function destroy(Establishment $establishment)
+    {
+        if ($establishment->image !== 'images/default.jpg') {
+            Storage::delete('public/' . $establishment->image);
+        }
+        $establishment->delete();
+
+        return back()->with('success', 'Establishment deleted successfully!');
     }
 }

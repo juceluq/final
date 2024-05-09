@@ -2,26 +2,38 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
             @foreach ($establishments as $establishment)
-                {{-- TODO Establishment card --}}
-                <a href="{{ $url ?? '#' }}"
-                    class="flex flex-col items-center bg-white border border-gray-300 rounded-lg shadow-lg hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700 md:flex-row md:max-w-xl overflow-hidden">
-                    <div class="w-full md:w-48 md:h-48 relative">
-                        <img src="{{ $establishment->image ? asset('storage/' . $establishment->image) : asset('storage/default.jpg') }}"
-                            alt="{{ $establishment->name }}" class="w-full h-full object-cover shadow-lg">
-                    </div>
-                    <div
-                        class="flex flex-col justify-between p-4 leading-normal bg-gradient-to-r ">
-                        <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white ">
-                            {{ $establishment->name }}
-                        </h5>
-                        <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">{{ $establishment->description }}
-                        </p>
-                        <p class="text-sm text-gray-500 dark:text-gray-400">{{ $establishment->category ?? 'N/A' }}</p>
-                        <p class="text-sm text-gray-500 dark:text-gray-400">
-                            {{ $establishment->location ?? 'No location specified' }}
-                        </p>
-                    </div>
-                </a>
+                <div class="relative group">
+                    @if (auth()->check() && (Auth::user()->role === 'Admin' || Auth::user()->role === 'Business'))
+                        <form method="POST" action="{{ route('establishments.destroy', $establishment) }}"
+                            onsubmit="return confirm('Are you sure you want to delete this establishment?');">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit"
+                                class="absolute right-2 top-2 hidden group-hover:flex justify-center items-center bg-red-500 text-white rounded-full w-10 h-10">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" class="w-6 h-6">
+                                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                                </svg>
+                            </button>
+                        </form>
+                    @endif
+                    <a href="{{ $url ?? '#' }}"
+                        class="flex flex-col items-center bg-white border border-gray-300 rounded-lg shadow-lg hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700 md:flex-row md:max-w-xl overflow-hidden">
+                        <div class="w-full md:w-48 md:h-48 relative">
+                            <img src="{{ $establishment->image ? asset('storage/' . $establishment->image) : asset('storage/default.jpg') }}"
+                                alt="{{ $establishment->name }}" class="w-full h-full object-cover shadow-lg">
+                        </div>
+                        <div class="flex flex-col justify-between p-4 leading-normal">
+                            <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+                                {{ $establishment->name }}
+                            </h5>
+                            <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">
+                                {{ $establishment->description }}</p>
+                        </div>
+                    </a>
+                </div>
             @endforeach
         </div>
     </div>
