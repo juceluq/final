@@ -26,11 +26,16 @@
                                 alt="{{ $establishment->name }}" class="w-full h-full object-cover shadow-lg">
                         </div>
                         <div class="flex flex-col justify-between p-4 leading-normal">
-                            <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-                                {{ $establishment->name }}
-                            </h5>
-                            <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">
-                                {{ $establishment->description }}</p>
+                            @foreach (split_title($establishment->name, 9) as $line)
+                                <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+                                    {{ $line }}
+                                </h5>
+                            @endforeach
+                            @foreach (split_description($establishment->description, 15) as $part)
+                                <p class="mb-1 font-normal text-gray-700 dark:text-gray-400">
+                                    {{ $part }}
+                                </p>
+                            @endforeach
                         </div>
                     </a>
                 </div>
