@@ -1,7 +1,11 @@
 <x-app-layout>
     <div class="bg-white dark:bg-gray-900 overflow-hidden shadow-sm sm:rounded-lg p-6">
-        <h2 class="text-2xl font-bold mb-4 text-gray-700 dark:text-gray-300">{{ $establishment->name }}</h2>
-
+        <div class="flex justify-between items-center mb-4">
+            <h2 class="text-2xl font-bold text-gray-700 dark:text-gray-300">{{ $establishment->name }}</h2>
+            <span class="bg-indigo-600 text-purple-200 text-lg font-semibold px-4 py-2 rounded-full shadow">
+                {{ number_format($establishment->price, 2) }}€
+            </span>
+        </div>
         <div class="flex flex-wrap md:flex-nowrap">
             <div class="w-full md:w-1/3">
                 <img src="{{ $establishment->image ? asset('storage/' . $establishment->image) : asset('storage/default.jpg') }}"
