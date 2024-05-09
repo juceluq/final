@@ -18,13 +18,13 @@ class EstablishmentController extends Controller
     public function show($id)
     {
         $establishment = Establishment::findOrFail($id);
-        return view('establishment', compact('establishment'));
+        return view('establishment.establishment', compact('establishment'));
     }
 
 
     public function create()
     {
-        return view('create');
+        return view('establishment.create');
     }
 
     public function store(Request $request)
