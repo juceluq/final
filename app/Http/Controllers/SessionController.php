@@ -9,11 +9,11 @@ class SessionController extends Controller
 {
     public function index()
     {
-        return view('login');
+        return view('Auth.login');
     }
 
     public function register(){
-        return view('register');
+        return view('Auth.register');
     }
 
     public function store(Request $request)
