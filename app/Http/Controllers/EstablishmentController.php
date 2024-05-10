@@ -52,7 +52,11 @@ class EstablishmentController extends Controller
             $establishment->save();
         }
 
-        return redirect()->route('index')->with('establishment_success', 'Establishment created successfully!');
+        return redirect()->route('index')->with('alert', [
+            'type' => 'success',
+            'title' => 'Success!',
+            'message' => 'Establishment created successfully!'
+        ]);;
     }
 
 
@@ -64,8 +68,16 @@ class EstablishmentController extends Controller
             }
             $establishment->delete();
 
-            return back()->with('establishment_deleted', 'Establishment deleted successfully!');
+            return back()->with('alert', [
+                'type' => 'success',
+                'title' => 'Successful!',
+                'message' => 'Establishment deleted successfully!'
+            ]);
         }
-        return back()->with('establishment_deleted_error', 'You are not authorized to delete this establishment!');
+        return back()->with('alert', [
+            'type' => 'danger',
+            'title' => 'Error!',
+            'message' => 'You are not authorized to delete this establishment!'
+        ]);
     }
 }

@@ -9,6 +9,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>ReservaSphere</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.css" rel="stylesheet" />
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
@@ -73,25 +74,9 @@
         </div>
     </header>
 
-    @if (session('establishment_success'))
-        <x-alert type="success" class="my-2 mx-4" title="Successful!">
-            {{ session('establishment_success') }}
-        </x-alert>
-    @elseif (session('establishment_deleted'))
-        <x-alert type="info" class="my-2 mx-4" title="Info!">
-            {{ session('establishment_deleted') }}
-        </x-alert>
-    @elseif (session('establishment_deleted_error'))
-        <x-alert type="danger" class="my-2 mx-4" title="Error!">
-            {{ session('establishment_deleted_error') }}
-        </x-alert>
-    @elseif (session('login_success'))
-        <x-alert type="success" class="my-2 mx-4" title="Successful!">
-            {{ session('login_success') }}
-        </x-alert>
-    @elseif (session('login_error'))
-        <x-alert type="danger" class="my-2 mx-4" title="Error!">
-            {{ session('login_error') }}
+    @if (session()->has('alert'))
+        <x-alert type="{{ session('alert')['type'] }}" class="my-2 mx-4" title="{{ session('alert')['title'] }}">
+            {{ session('alert')['message'] }}
         </x-alert>
     @endif
 
@@ -115,6 +100,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/datepicker.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const dropdownButton = document.getElementById('dropdownInformationButton');

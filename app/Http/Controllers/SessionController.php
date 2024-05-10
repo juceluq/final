@@ -24,14 +24,30 @@ class SessionController extends Controller
             "password" => "required"
         ]);
         if (Auth::attempt($atributos)) {
-            return redirect("/")->with("login_success", "Login successful.");
+            if (str_contains(back()->getTargetUrl(), "/login")) {
+                return redirect('/')->with('alert', [
+                    'type' => 'success',
+                    'title' => 'Success!',
+                    'message' => 'Login successful.'
+                ]);
+            } else {
+                return back()->with('alert', [
+                    'type' => 'success',
+                    'title' => 'Success!',
+                    'message' => 'Login successful.'
+                ]);
+            }
         }
-        return redirect("login")->with("login_error", "Incorrect credentials.");
+        return back()->with('alert', [
+            'type' => 'danger',
+            'title' => 'Error!',
+            'message' => 'Incorrect credentials.'
+        ]);;
     }
 
     public function destroy()
     {
         Auth::logout();
-        return redirect('/login');
+        return back();
     }
 }
