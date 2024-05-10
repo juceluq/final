@@ -58,15 +58,22 @@
                     </div>
                 @else
                     <div class="mt-9 flex-grow flex items-center justify-center">
-                        <a href="{{ route('login') }}"
-                            class="py-5 px-4 border border-transparent rounded-md shadow-sm text-8xl font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                            Login
-                        </a>
+                        <div class="relative inline-flex  group">
+                            <div
+                                class="absolute transitiona-all duration-1000 opacity-70 -inset-px bg-gradient-to-r from-[#44BCFF] via-[#FF44EC] to-[#FF675E] rounded-xl blur-lg group-hover:opacity-100 group-hover:-inset-1 group-hover:duration-200 animate-tilt">
+                            </div>
+                            <a href="{{ route('login') }}" title="Login"
+                                class="relative inline-flex items-center justify-center px-8 py-4 text-lg font-bold text-gray-700
+    dark:text-gray-300 transition-all duration-200 dark:bg-gray-900 bg-white font-pj
+    rounded-xl focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900"
+                                role="button">You must login to reserve this establishment.
+                            </a>
 
-
+                        </div>
                     </div>
-                @endif
             </div>
+            @endif
         </div>
+    </div>
     </div>
 </x-app-layout>

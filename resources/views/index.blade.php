@@ -3,7 +3,7 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
             @foreach ($establishments as $establishment)
                 <div class="relative group">
-                    @if (auth()->check() && (Auth::user()->role === 'Admin' || Auth::user()->role === 'Business'))
+                    @if (auth()->check() && (Auth::user()->role === 'Admin' || (Auth::user()->role === 'Business' && $establishment->user_id === Auth::user()->id)))
                         <button type="button" onclick="confirmDelete(this)"
                             data-form-id="delete-form-{{ $establishment->id }}"
                             class="absolute right-2 top-2 hidden group-hover:flex justify-center items-center bg-red-500 text-white rounded-full w-10 h-10">

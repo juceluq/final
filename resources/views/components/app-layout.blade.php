@@ -44,16 +44,6 @@
                                 <div>{{ Auth::user()->name }}</div>
                                 <div class="font-medium truncate">{{ Auth::user()->email }}</div>
                             </div>
-                            <ul class="py-2 text-sm text-gray-700 dark:text-gray-200"
-                                aria-labelledby="dropdownInformationButton">
-                                <li>
-                                    <a href="#"
-                                        class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Dashboard</a>
-                                </li>
-                                <li>
-                                    <a href="#"
-                                        class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Settings</a>
-                                </li>
                             </ul>
                             <form action="/logout" method="POST">
                                 @csrf
@@ -83,9 +73,17 @@
         </div>
     </header>
 
-    @if (session('Establishment_success'))
+    @if (session('establishment_success'))
         <x-alert type="success" class="my-2 mx-4" title="Successful!">
-            {{ session('Establishment_success') }}
+            {{ session('establishment_success') }}
+        </x-alert>
+    @elseif (session('establishment_deleted'))
+        <x-alert type="info" class="my-2 mx-4" title="Info!">
+            {{ session('establishment_deleted') }}
+        </x-alert>
+    @elseif (session('establishment_deleted_error'))
+        <x-alert type="danger" class="my-2 mx-4" title="Error!">
+            {{ session('establishment_deleted_error') }}
         </x-alert>
     @elseif (session('login_success'))
         <x-alert type="success" class="my-2 mx-4" title="Successful!">
@@ -139,12 +137,12 @@
             const prefersDarkMode = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
 
             const swalOptions = {
-                title: '¿Estás seguro?',
-                text: "No podrás revertir esto!",
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
                 icon: 'warning',
                 showCancelButton: true,
-                confirmButtonText: 'Sí, bórralo!',
-                cancelButtonText: 'Cancelar',
+                confirmButtonText: 'Yes, delete it!',
+                cancelButtonText: 'Cancel',
             };
 
 

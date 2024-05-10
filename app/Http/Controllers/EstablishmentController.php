@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Establishment;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
@@ -51,17 +52,20 @@ class EstablishmentController extends Controller
             $establishment->save();
         }
 
-        return redirect()->route('index')->with('Establishment_success', 'Establishment created successfully!');
+        return redirect()->route('index')->with('establishment_success', 'Establishment created successfully!');
     }
 
 
     public function destroy(Establishment $establishment)
     {
-        if ($establishment->image !== 'images/default.jpg') {
-            Storage::delete('public/' . $establishment->image);
-        }
-        $establishment->delete();
+        if (Auth::user()->role === 'Admin' || (Auth::user()->role === 'Business' && $establishment->user_id === Auth::user()->id)) {
+            if ($establishment->image !== 'images/default.jpg') {
+                Storage::delete('public/' . $establishment->image);
+            }
+            $establishment->delete();
 
-        return back()->with('success', 'Establishment deleted successfully!');
+            return back()->with('establishment_deleted', 'Establishment deleted successfully!');
+        }
+        return back()->with('establishment_deleted_error', 'You are not authorized to delete this establishment!');
     }
 }
