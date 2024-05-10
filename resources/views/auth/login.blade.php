@@ -7,13 +7,13 @@
             <div>
                 <label for="username" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Username</label>
                 <input type="text" name="username" id="username"
-                    class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                    class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm dark:text-gray-300 dark:bg-gray-700">
             </div>
             <div>
                 <label for="password"
                     class="block text-sm font-medium text-gray-700 dark:text-gray-300">Password</label>
                 <input type="password" name="password" id="password"
-                    class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                    class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm dark:text-gray-300 dark:bg-gray-700">
             </div>
             <div class="text-sm text-center text-gray-700 dark:text-gray-300">
                 <p>Not registered? <a href="/register"
