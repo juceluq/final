@@ -20,7 +20,7 @@
                 @auth
                     <div class="relative inline-block text-left">
                         <button id="dropdownInformationButton" data-dropdown-toggle="dropdownInformation"
-                            class="text-gray-700 dark:text-gray-300 font-bold rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center"
+                            class="text-gray-700 dark:text-gray-300 font-bold rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center z-auto"
                             type="button">
                             {{ Auth::user()->username }}
                             <svg class="w-2.5 h-2.5 ml-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
@@ -68,7 +68,6 @@
                 @endauth
                 <button id="theme-toggle" type="button"
                     class="w-10 h-10 bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 rounded-full shadow flex items-center justify-center text-white transition-all">
-                    <!-- Icons toggled based on dark/light mode -->
                     <svg id="theme-toggle-dark-icon" class="hidden w-6 h-6" fill="currentColor" viewBox="0 0 20 20"
                         xmlns="http://www.w3.org/2000/svg">
                         <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
@@ -83,6 +82,21 @@
             </div>
         </div>
     </header>
+
+    @if (session('Establishment_success'))
+        <x-alert type="success" class="my-2 mx-4" title="Successful!">
+            {{ session('Establishment_success') }}
+        </x-alert>
+    @elseif (session('login_success'))
+        <x-alert type="success" class="my-2 mx-4" title="Successful!">
+            {{ session('login_success') }}
+        </x-alert>
+    @elseif (session('login_error'))
+        <x-alert type="danger" class="my-2 mx-4" title="Error!">
+            {{ session('login_error') }}
+        </x-alert>
+    @endif
+
 
     <div class="flex-grow container mx-auto my-6 px-6">
         {{ $slot }}
@@ -158,6 +172,10 @@
                 e.target.value = parseFloat(value).toFixed(2);
             }
         });
+
+        function closeMessage(button) {
+            button.parentNode.style.display = 'none';
+        }
     </script>
 
 </body>

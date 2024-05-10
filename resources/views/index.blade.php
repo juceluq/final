@@ -31,12 +31,12 @@
                                 alt="{{ $establishment->name }}" class="w-full h-full object-cover shadow-lg rounded-lg">
                         </div>
                         <div class="flex flex-col justify-between p-4 leading-normal">
-                            @foreach (split_title($establishment->name, 9) as $line)
+                            @foreach (split_title($establishment->name, 11) as $line)
                                 <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
                                     {{ $line }}
                                 </h5>
                             @endforeach
-                            @foreach (split_description($establishment->description, 15) as $part)
+                            @foreach (split_description($establishment->description, 20) as $part)
                                 <p class="mb-1 font-normal text-gray-700 dark:text-gray-400">
                                     {{ $part }}
                                 </p>

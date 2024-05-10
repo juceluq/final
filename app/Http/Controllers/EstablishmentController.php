@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Establishment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 
 class EstablishmentController extends Controller
@@ -37,7 +38,6 @@ class EstablishmentController extends Controller
             'price' => 'required|numeric',
             'image' => 'sometimes|file|image|max:5000',
         ]);
-
         $validated['image'] = 'images/default.jpg';
         $validated['user_id'] = auth()->id();
 
@@ -51,7 +51,7 @@ class EstablishmentController extends Controller
             $establishment->save();
         }
 
-        return redirect()->route('index')->with('success', 'Establishment created successfully!');
+        return redirect()->route('index')->with('Establishment_success', 'Establishment created successfully!');
     }
 
 

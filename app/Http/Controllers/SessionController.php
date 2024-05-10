@@ -12,7 +12,8 @@ class SessionController extends Controller
         return view('Auth.login');
     }
 
-    public function register(){
+    public function register()
+    {
         return view('Auth.register');
     }
 
@@ -23,9 +24,9 @@ class SessionController extends Controller
             "password" => "required"
         ]);
         if (Auth::attempt($atributos)) {
-            return redirect("login");
+            return redirect("/")->with("login_success", "Login successful.");
         }
-        return redirect("login")->with("error", "Incorrect credentials.");
+        return redirect("login")->with("login_error", "Incorrect credentials.");
     }
 
     public function destroy()

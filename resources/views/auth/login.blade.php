@@ -1,7 +1,4 @@
 <x-app-layout>
-    @if (session('error'))
-        <x-alert type='danger' title="Error!">{{ session('error') }}</x-alert>
-    @endif
 
     <div class="max-w-lg mx-auto p-6 bg-white dark:bg-gray-900 shadow-md rounded-lg">
         <h2 class="text-2xl font-semibold text-center text-gray-800 dark:text-gray-200 mb-6">Login</h2>

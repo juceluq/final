@@ -1,6 +1,6 @@
 <x-app-layout>
     <div class="bg-white dark:bg-gray-900 overflow-hidden shadow-sm sm:rounded-lg p-6">
-        <div class="flex justify-between items-center mb-4 relative z-10">
+        <div class="flex justify-between items-center mb-4 relative z-2">
             <h2
                 class="text-2xl font-bold text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-900 px-4 py-2 rounded-lg shadow-lg">
                 {{ $establishment->name }}
