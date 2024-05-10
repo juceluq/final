@@ -31,14 +31,16 @@ class EstablishmentController extends Controller
 
     public function store(Request $request)
     {
+        //TODO Falta poner el limite de la imagen
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'required|string',
             'location' => 'required|string',
             'category' => 'required|string',
             'price' => 'required|numeric',
-            'image' => 'sometimes|file|image|max:5000',
-        ]);
+            'image' => 'file|image|max:16000',
+        ],
+    );
         $validated['image'] = 'images/default.jpg';
         $validated['user_id'] = auth()->id();
 
@@ -48,7 +50,7 @@ class EstablishmentController extends Controller
             $newFileName = 'IMG_' . $establishment->id . '.' . $request->file('image')->extension();
             $path = $request->file('image')->storeAs('images', $newFileName, 'public');
 
-            $establishment->image = $path;
+            $establishment->image = $newFileName;
             $establishment->save();
         }
 

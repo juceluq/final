@@ -11,7 +11,7 @@
         </div>
         <div class="flex flex-wrap md:flex-nowrap">
             <div class="w-full md:w-1/3">
-                <img src="{{ $establishment->image ? asset('storage/' . $establishment->image) : asset('storage/default.jpg') }}"
+                <img src="{{ $establishment->image ? asset('storage/images/' . $establishment->image) : asset('storage/default.jpg') }}"
                     alt="{{ $establishment->name }}" class="w-full h-auto my-4 rounded-3xl">
             </div>
 

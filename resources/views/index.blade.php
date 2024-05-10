@@ -27,7 +27,7 @@
                                 class="absolute top-2 left-2 bg-white bg-opacity-90 rounded-full px-3 py-1 text-xs font-semibold text-gray-900 shadow">
                                 {{ number_format($establishment->price, 2) }}€
                             </span>
-                            <img src="{{ $establishment->image ? asset('storage/' . $establishment->image) : asset('storage/default.jpg') }}"
+                            <img src="{{ $establishment->image ? asset('storage/images/' . $establishment->image) : asset('storage/default.jpg') }}"
                                 alt="{{ $establishment->name }}" class="w-full h-full object-cover shadow-lg rounded-lg">
                         </div>
                         <div class="flex flex-col justify-between p-4 leading-normal">

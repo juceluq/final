@@ -47,7 +47,7 @@ class DatabaseSeeder extends Seeder
                 'description' => "Description for Business $index",
                 'location' => "Location for Business $index",
                 'category' => "Category for Business $index",
-                'image' => 'images/default.jpg',
+                'image' => 'default.jpg',
                 'price' => 10.00
             ]);
         }
