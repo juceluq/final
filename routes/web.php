@@ -1,33 +1,37 @@
 <?php
 
-use App\Http\Controllers\EstablishmentController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\EstablishmentController;
+use App\Http\Controllers\ReservaController;
 use App\Http\Controllers\SessionController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth as FacadesAuth;
 
-FacadesAuth::routes();
+// Rutas de autenticación
 FacadesAuth::routes(['verify' => true]);
 
-// Guest routes
-Route::get('/login', [SessionController::class, 'index'])->middleware("guest")->name('login');
-Route::post('/login', [SessionController::class, 'store'])->middleware("guest");
-
-// Authenticated routes
-Route::post('/logout', [SessionController::class, 'destroy'])->middleware('auth');
-
-Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register.form')->middleware("guest");
+// Rutas para usuarios no autenticados
+Route::get('/login', [SessionController::class, 'index'])->middleware('guest')->name('login');
+Route::post('/login', [SessionController::class, 'store'])->middleware('guest');
+Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register.form')->middleware('guest');
 Route::post('/register', [RegisterController::class, 'register'])->name('register');
-Route::get('/establishments/create', [EstablishmentController::class, 'create'])->name('establishments.create')->middleware('auth');
-Route::post('/establishments', [EstablishmentController::class, 'store'])->name('establishments.store')->middleware('auth');
-Route::delete('/establishments/{establishment}', [EstablishmentController::class, 'destroy'])->middleware('auth')->name('establishments.destroy');
-Route::get('/establishments/{establishment}', [EstablishmentController::class, 'show'])->name('establishments.show');
-Route::middleware(['auth'])->group(function () {
+
+// Rutas para usuarios autenticados
+Route::middleware('auth')->group(function () {
+    Route::post('/logout', [SessionController::class, 'destroy']);
+    Route::get('/establishments/create', [EstablishmentController::class, 'create'])->name('establishments.create');
+    Route::post('/establishments', [EstablishmentController::class, 'store'])->name('establishments.store');
+    Route::delete('/establishments/{establishment}', [EstablishmentController::class, 'destroy'])->name('establishments.destroy');
+    Route::get('/establishments/{establishment}', [EstablishmentController::class, 'show'])->name('establishments.show');
     Route::get('establishments/{establishment}/edit', [EstablishmentController::class, 'edit'])->name('establishments.edit');
     Route::put('establishments/{establishment}', [EstablishmentController::class, 'update'])->name('establishments.update');
+    Route::post('/reservar', [ReservaController::class, 'store'])->name('reserva.store');
 });
+
+// Ruta para la página de inicio
+Route::get('/', [EstablishmentController::class, 'index'])->name('index');
+
+// Ruta para la verificación de correo electrónico
 Route::get('/email/verify', function () {
     return view('auth.verify');
 })->middleware('auth')->name('verification.notice');
-
-Route::get('/', [EstablishmentController::class, 'index'])->name('index');

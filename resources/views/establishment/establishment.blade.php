@@ -80,10 +80,12 @@
                     <p class="text-lg font-semibold text-gray-700 dark:text-gray-300">Category:</p>
                     <p class="text-gray-700 dark:text-gray-300 mb-4">{{ $establishment->category }}</p>
                     <p class="text-lg font-semibold text-gray-700 dark:text-gray-300">Description:</p>
-                    <p class="mt-4 text-gray-700 dark:text-gray-300">{{ $establishment->description }}</p>
+                    <p class="mt-2 text-gray-700 dark:text-gray-300">{{ $establishment->description }}</p>
                 </div>
 
                 @if (Auth::user()?->role === 'Admin' || Auth::user()?->role === 'Client')
+                <form class="space-y-4" action="{{ route('reserva.store') }}" method="POST">
+                    @csrf
                     <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md mt-3">
                         <div class="flex flex-col md:flex-row md:justify-between ml-4">
                             <div class="mb-4 md:mb-0 md:w-1/2 pr-5">
@@ -131,12 +133,12 @@
                                     </div>
                                     <input type="text" id="phone-input" aria-describedby="helper-text-explanation"
                                         class="bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 pl-10 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
-                                        value="+34 626 20 32 12" placeholder="Your phone number" />
+                                        placeholder="+34 626 20 32 12" placeholder="Your phone number" />
                                 </div>
                                 <p id="helper-text-explanation" class="text-sm text-gray-500 dark:text-gray-400 mt-1">
                                     Select a phone number that matches the format.</p>
                             </div>
-                            <button id="reserve-button"
+                            <button id="reserve-button" type="submit"
                                 class="relative inline-flex items-center justify-center p-0.5 mt-1 ml-5 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-purple-500 to-pink-500 group-hover:from-purple-500 group-hover:to-pink-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-purple-200 dark:focus:ring-purple-800">
                                 <span
                                     class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
@@ -147,6 +149,8 @@
                             </div>
                         </div>
                     </div>
+                    <input type="hidden" id="establishment_id" value="{{ $establishment->id }}">
+                </form>
                 @elseif (Auth::user()?->role === 'Business')
                     <span
                         class="relative inline-flex items-center justify-center px-3 py-5 text-lg font-bold text-gray-700 mt-3
@@ -192,7 +196,7 @@
                     </button>
                 </div>
                 <div class="p-4 md:p-5">
-                    <form class="space-y-4" action="/login" method="POST">
+                    <form class="space-y-4" action="{{ route('login') }}" method="POST">
                         @csrf
                         <div>
                             <label for="username"
