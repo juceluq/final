@@ -18,8 +18,8 @@ return new class extends Migration
             $table->foreignIdFor(User::class)->onDelete('cascade');
             $table->foreignIdFor(Establishment::class)->onDelete('cascade');
             $table->decimal('price', 8, 2);
-            $table->string('start_date');
-            $table->string('end_date');
+            $table->date('start_date');
+            $table->date('end_date');
             $table->string('phone');
             $table->string('status');
             $table->timestamps();

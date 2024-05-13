@@ -105,13 +105,13 @@
                             <div class="mb-4 md:mb-0 md:w-1/2">
                                 <label for="start-date"
                                     class="text-lg font-semibold text-gray-700 dark:text-gray-300">Start Date:</label>
-                                <input type="date" id="start-date"
+                                <input type="date" id="start-date" name="start_date"
                                     class="bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white">
                             </div>
                             <div class="mb-4 md:mb-0 md:w-1/2 md:pl-5">
                                 <label for="end-date" class="text-lg font-semibold text-gray-700 dark:text-gray-300">End
                                     Date:</label>
-                                <input type="date" id="end-date"
+                                <input type="date" id="end-date" name="end_date"
                                     class="bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white">
                             </div>
                         </div>
@@ -131,7 +131,7 @@
                                                 d="M18 13.446a3.02 3.02 0 0 0-.946-1.985l-1.4-1.4a3.054 3.054 0 0 0-4.218 0l-.7.7a.983.983 0 0 1-1.39 0l-2.1-2.1a.983.983 0 0 1 0-1.389l.7-.7a2.98 2.98 0 0 0 0-4.217l-1.4-1.4a2.824 2.824 0 0 0-4.218 0c-3.619 3.619-3 8.229 1.752 12.979C6.785 16.639 9.45 18 11.912 18a7.175 7.175 0 0 0 5.139-2.325A2.9 2.9 0 0 0 18 13.446Z" />
                                         </svg>
                                     </div>
-                                    <input type="text" id="phone-input" aria-describedby="helper-text-explanation"
+                                    <input type="text" id="phone-input" aria-describedby="helper-text-explanation" name="phone"
                                         class="bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 pl-10 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
                                         placeholder="+34 626 20 32 12" placeholder="Your phone number" />
                                 </div>
@@ -149,7 +149,7 @@
                             </div>
                         </div>
                     </div>
-                    <input type="hidden" id="establishment_id" value="{{ $establishment->id }}">
+                    <input type="hidden" id="establishment_id" name="establishment_id" value="{{ $establishment->id }}">
                 </form>
                 @elseif (Auth::user()?->role === 'Business')
                     <span
