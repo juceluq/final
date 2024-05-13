@@ -158,7 +158,7 @@
                                     Reserve
                                 </span>
                             </button>
-                            <div id="totalResult">Total: <span id="totalDays">0</span> days</div>
+                            <div id="result" class="mt-2 text-gray-500"></div>
                         </div>
                     </div>
                 @elseif (Auth::user()?->role === 'Business')
