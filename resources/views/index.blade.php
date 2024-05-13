@@ -21,6 +21,16 @@
                             @csrf
                             @method('DELETE')
                         </form>
+
+                        <a href="{{ route('establishments.edit', $establishment->id) }}"
+                            class="absolute right-2 bottom-2 hidden group-hover:flex justify-center items-center bg-blue-500 text-white rounded-full w-10 h-10">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                class="w-6 h-6">
+                                <path d="M12 20h9"></path>
+                                <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"></path>
+                            </svg>
+                        </a>
                     @endif
                     <a href="{{ route('establishments.show', $establishment->id) }}"
                         class="flex flex-col items-center bg-white border border-gray-300 rounded-lg shadow-lg hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700 md:flex-row md:max-w-xl overflow-hidden">
