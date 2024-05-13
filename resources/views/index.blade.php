@@ -3,7 +3,9 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
             @foreach ($establishments as $establishment)
                 <div class="relative group">
-                    @if (auth()->check() && (Auth::user()->role === 'Admin' || (Auth::user()->role === 'Business' && $establishment->user_id === Auth::user()->id)))
+                    @if (auth()->check() &&
+                            (Auth::user()->role === 'Admin' ||
+                                (Auth::user()->role === 'Business' && $establishment->user_id === Auth::user()->id)))
                         <button type="button" onclick="confirmDelete(this)"
                             data-form-id="delete-form-{{ $establishment->id }}"
                             class="absolute right-2 top-2 hidden group-hover:flex justify-center items-center bg-red-500 text-white rounded-full w-10 h-10">
@@ -27,8 +29,9 @@
                                 class="absolute top-2 left-2 bg-white bg-opacity-90 rounded-full px-3 py-1 text-xs font-semibold text-gray-900 shadow">
                                 {{ number_format($establishment->price, 2) }}€
                             </span>
-                            <img src="{{ $establishment->image ? asset('storage/images/' . $establishment->image) : asset('storage/default.jpg') }}"
-                                alt="{{ $establishment->name }}" class="w-full h-full object-cover shadow-lg rounded-lg">
+                            <img src="{{ asset('storage/images/' . $establishment->images->first()->filename) }}"
+                                alt="{{ $establishment->name }}"
+                                class="w-full h-full object-cover shadow-lg rounded-lg">
                         </div>
                         <div class="flex flex-col justify-between p-4 leading-normal">
                             @foreach (split_title($establishment->name, 11) as $line)

@@ -38,8 +38,8 @@
             </div>
 
             <div class="my-4">
-                <label for="image" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Image:</label>
-                <input type="file" name="image" id="image"
+                <label for="image" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Images (up to 3):</label>
+                <input type="file" name="images[]" id="image" multiple
                     class="shadow appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700">
             </div>
 

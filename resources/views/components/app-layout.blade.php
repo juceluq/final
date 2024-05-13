@@ -160,6 +160,29 @@
         function closeMessage(button) {
             button.parentNode.style.display = 'none';
         }
+        document.getElementById('image').onchange = function() {
+    if (this.files.length > 3) {
+        const prefersDarkMode = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        
+        const swalOptions = {
+            title: 'Too Many Files',
+            text: 'You can only upload a maximum of 3 images.',
+            icon: 'error',
+            confirmButtonText: 'OK'
+        };
+
+        if (prefersDarkMode) {
+            swalOptions.background = '#1f2937';
+            swalOptions.color = '#ffffff';
+            swalOptions.confirmButtonColor = '#4e4e4e';
+        } else {
+            swalOptions.confirmButtonColor = '#3085d6';
+        }
+
+        Swal.fire(swalOptions);
+        this.value = ''; // Reset the file input
+    }
+};
     </script>
 
 </body>

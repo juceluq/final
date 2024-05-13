@@ -20,8 +20,13 @@ return new class extends Migration
             $table->text('description');
             $table->string('location');
             $table->string('category');
-            $table->string('image');
             $table->decimal('price', 8, 2);
+            $table->timestamps();
+        });
+        Schema::create('images', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('establishment_id')->constrained()->onDelete('cascade');
+            $table->string('filename');
             $table->timestamps();
         });
     }
@@ -32,5 +37,6 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('establishments');
+        Schema::dropIfExists('images');
     }
 };

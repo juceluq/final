@@ -41,15 +41,20 @@ class DatabaseSeeder extends Seeder
 
         // Crear establecimientos
         foreach (range(1, 12) as $index) {
-            Establishment::factory()->create([
+            $establishment = Establishment::factory()->create([
                 'user_id' => $businessUser->id,
                 'name' => "Business $index",
                 'description' => "Description for Business $index",
                 'location' => "Location for Business $index",
                 'category' => "Category for Business $index",
-                'image' => 'default.jpg',
                 'price' => 10.00
             ]);
+
+            foreach (range(1, 3) as $imgIndex) {
+                $filename = "default/default.jpg";
+
+                $establishment->images()->create(['filename' => $filename]);
+            }
         }
     }
 }

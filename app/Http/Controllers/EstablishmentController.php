@@ -28,54 +28,63 @@ class EstablishmentController extends Controller
     {
         return view('establishment.create');
     }
-
     public function store(Request $request)
     {
-        //TODO Falta poner el limite de la imagen
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'required|string',
             'location' => 'required|string',
             'category' => 'required|string',
             'price' => 'required|numeric',
-            'image' => 'file|image|max:16000',
-        ],
-    );
-        $validated['image'] = 'images/default.jpg';
+            'images' => 'sometimes|array|max:3',
+            'images.*' => 'image|max:5000',
+        ]);
+    
         $validated['user_id'] = auth()->id();
-
+    
         $establishment = Establishment::create($validated);
-
-        if ($request->hasFile('image')) {
-            $newFileName = 'IMG_' . $establishment->id . '.' . $request->file('image')->extension();
-            $path = $request->file('image')->storeAs('images', $newFileName, 'public');
-
-            $establishment->image = $newFileName;
-            $establishment->save();
+        $folderName = 'IMG_' . $establishment->id;
+        $defaultImage = 'default.jpg';
+        $uploadedImageCount = $request->hasFile('images') ? count($request->file('images')) : 0;
+    
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $index => $image) {
+                $newFileName = $index + 1 . '.' . $image->extension();
+                $path = $image->storeAs('images/' . $folderName, $newFileName, 'public');
+                $establishment->images()->create(['filename' => $folderName . '/' . $newFileName]);
+            }
         }
-
+    
+        for ($i = $uploadedImageCount; $i < 3; $i++) {
+            $establishment->images()->create(['filename' => 'default/' . $defaultImage]);
+        }
+    
         return redirect()->route('index')->with('alert', [
             'type' => 'success',
             'title' => 'Success!',
-            'message' => 'Establishment created successfully!'
-        ]);;
+            'message' => 'Establishment created successfully with images!'
+        ]);
     }
+    
+
 
 
     public function destroy(Establishment $establishment)
     {
         if (Auth::user()->role === 'Admin' || (Auth::user()->role === 'Business' && $establishment->user_id === Auth::user()->id)) {
-            if ($establishment->image !== 'images/default.jpg') {
-                Storage::delete('public/' . $establishment->image);
-            }
+            $directory = 'public/images/IMG_' . $establishment->id;
+
+            Storage::deleteDirectory($directory);
+
             $establishment->delete();
 
             return back()->with('alert', [
                 'type' => 'success',
                 'title' => 'Successful!',
-                'message' => 'Establishment deleted successfully!'
+                'message' => 'Establishment and all associated images deleted successfully!'
             ]);
         }
+
         return back()->with('alert', [
             'type' => 'danger',
             'title' => 'Error!',
