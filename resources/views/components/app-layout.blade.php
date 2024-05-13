@@ -180,9 +180,10 @@
         }
 
         Swal.fire(swalOptions);
-        this.value = ''; // Reset the file input
+        this.value = '';
     }
 };
+
     </script>
 
 </body>
