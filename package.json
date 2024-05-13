@@ -19,6 +19,7 @@
     "dependencies": {
         "@tailwindcss/line-clamp": "^0.4.4",
         "flowbite": "^2.3.0",
-        "flowbite-datepicker": "^1.2.6"
+        "flowbite-datepicker": "^1.2.6",
+        "jquery": "^3.7.1"
     }
 }

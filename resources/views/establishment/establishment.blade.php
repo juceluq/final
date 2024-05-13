@@ -84,81 +84,67 @@
                 </div>
 
                 @if (Auth::user()?->role === 'Admin' || Auth::user()?->role === 'Client')
-                    <div class="mt-4 mr-80">
-                        <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md">
-                            <div class="mb-4">
+                    <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md mt-3">
+                        <div class="flex flex-col md:flex-row md:justify-between ml-4">
+                            <div class="mb-4 md:mb-0 md:w-1/2 pr-5">
                                 <label for="name"
                                     class="text-lg font-semibold text-gray-700 dark:text-gray-300">Name:</label>
                                 <input type="text" id="name" value="{{ Auth::user()->name }}" readonly
                                     class="bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white">
                             </div>
-                            <div class="mb-4">
+                            <div class="mb-4 md:mb-0 md:w-1/2 pr-10">
                                 <label for="email"
                                     class="text-lg font-semibold text-gray-700 dark:text-gray-300">Email:</label>
                                 <input type="email" id="email" value="{{ Auth::user()->email }}" readonly
                                     class="bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white">
                             </div>
-                            <div class="mb-4">
+                        </div>
+                        <div class="mb-4 flex flex-col md:flex-row md:justify-between pr-10 mt-3 ml-4">
+                            <div class="mb-4 md:mb-0 md:w-1/2">
+                                <label for="start-date"
+                                    class="text-lg font-semibold text-gray-700 dark:text-gray-300">Start Date:</label>
+                                <input type="date" id="start-date"
+                                    class="bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white">
+                            </div>
+                            <div class="mb-4 md:mb-0 md:w-1/2 md:pl-5">
+                                <label for="end-date" class="text-lg font-semibold text-gray-700 dark:text-gray-300">End
+                                    Date:</label>
+                                <input type="date" id="end-date"
+                                    class="bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white">
+                            </div>
+                        </div>
 
+                        <div class="mb-4 flex flex-col md:flex-row items-center pr-10 mt-3 ml-4">
+                            <div class="mb-4 md:mb-0 md:w-1/2 relative">
                                 <label for="phone-input"
-                                    class="text-lg font-semibold text-gray-700 dark:text-gray-300">Phone number:</label>
+                                    class="text-lg font-semibold text-gray-700 dark:text-gray-300">Phone
+                                    number:</label>
                                 <div class="relative">
                                     <div
                                         class="absolute inset-y-0 start-0 top-0 flex items-center ps-3.5 pointer-events-none">
                                         <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
-                                            xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 19 18">
+                                            xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+                                            viewBox="0 0 19 18">
                                             <path
                                                 d="M18 13.446a3.02 3.02 0 0 0-.946-1.985l-1.4-1.4a3.054 3.054 0 0 0-4.218 0l-.7.7a.983.983 0 0 1-1.39 0l-2.1-2.1a.983.983 0 0 1 0-1.389l.7-.7a2.98 2.98 0 0 0 0-4.217l-1.4-1.4a2.824 2.824 0 0 0-4.218 0c-3.619 3.619-3 8.229 1.752 12.979C6.785 16.639 9.45 18 11.912 18a7.175 7.175 0 0 0 5.139-2.325A2.9 2.9 0 0 0 18 13.446Z" />
                                         </svg>
                                     </div>
                                     <input type="text" id="phone-input" aria-describedby="helper-text-explanation"
-                                        class="bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
+                                        class="bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 pl-10 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
                                         value="+34 626 20 32 12" placeholder="Your phone number" />
                                 </div>
+                                <p id="helper-text-explanation" class="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                                    Select a phone number that matches the format.</p>
                             </div>
-
-                            <p id="helper-text-explanation" class="text-sm text-gray-500 dark:text-gray-400">
-                                Select a phone number that matches the format.</p>
-
-                            {{-- TODO date range picker --}}
-                            <div date-rangepicker class="flex items-center mt-4">
-                                <div class="relative">
-                                    <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-                                        <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
-                                            fill="currentColor" viewBox="0 0 20 20">
-                                            <path
-                                                d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10 a1 1 0 0 1 0 2H5 a1 1 0 0 1 0-2Z">
-                                            </path>
-                                        </svg>
-                                    </div>
-                                    <input name="start" type="text"
-                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                        placeholder="Select date start">
-                                </div>
-                                <span class="mx-4 text-gray-500">to</span>
-                                <div class="relative">
-                                    <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-                                        <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
-                                            fill="currentColor" viewBox="0 0 20 20">
-                                            <path
-                                                d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10 a1 1 0 0 1 0 2H5 a1 1 0 0 1 0-2Z">
-                                            </path>
-                                        </svg>
-                                    </div>
-                                    <input name="end" type="text"
-                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                        placeholder="Select date end">
-                                </div>
-                            </div>
-
-                            <button
-                                class="mt-4 relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-purple-500 to-pink-500 group-hover:from-purple-500 group-hover:to-pink-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-purple-200 dark:focus:ring-purple-800">
+                            <button id="reserve-button"
+                                class="relative inline-flex items-center justify-center p-0.5 mt-1 ml-5 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-purple-500 to-pink-500 group-hover:from-purple-500 group-hover:to-pink-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-purple-200 dark:focus:ring-purple-800">
                                 <span
                                     class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
                                     Reserve
                                 </span>
                             </button>
-                            <div id="result" class="mt-2 text-gray-500"></div>
+                            <div id="total-price" class="text-lg font-semibold text-gray-700 dark:text-gray-300 ml-2">
+                            </div>
                         </div>
                     </div>
                 @elseif (Auth::user()?->role === 'Business')
@@ -236,4 +222,36 @@
             </div>
         </div>
     </div>
+
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#reserve-button').prop('disabled', true);
+
+            function calcularPrecioTotal() {
+                var startDate = new Date($('#start-date').val());
+                var endDate = new Date($('#end-date').val());
+
+                if (!isNaN(startDate) && !isNaN(endDate) && startDate < endDate) {
+                    var differenceInMs = endDate - startDate;
+                    var differenceInDays = differenceInMs / (1000 * 60 * 60 * 24);
+                    var establishmentPrice = {{ $establishment->price }};
+                    var totalPrice = differenceInDays * establishmentPrice;
+
+                    $('#total-price').text('Total Price: ' + totalPrice.toFixed(2) + '€');
+                    $('#total-price').show();
+
+                    $('#reserve-button').prop('disabled', totalPrice <= 0 || isNaN(totalPrice));
+                } else {
+                    $('#total-price').text('Date must be correct.');
+                    $('#reserve-button').prop('disabled', true);
+                }
+            }
+            $('#start-date, #end-date').on('change', function() {
+                calcularPrecioTotal();
+            });
+            $('#total-price').hide();
+        });
+    </script>
 </x-app-layout>

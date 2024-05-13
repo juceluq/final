@@ -99,56 +99,31 @@
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/datepicker.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
     <script>
-        import DateRangePicker from 'flowbite-datepicker/DateRangePicker';
-
         document.addEventListener('DOMContentLoaded', function() {
             const dropdownButton = document.getElementById('dropdownInformationButton');
             const dropdownMenu = document.getElementById('dropdownInformation');
+            const startDateInput = document.getElementById('start-date');
 
-            const startInput = document.querySelector('input[name="start"]');
-            const endInput = document.querySelector('input[name="end"]');
-            const resultDiv = document.getElementById('result');
+            if (dropdownButton && dropdownMenu) {
+                dropdownButton.addEventListener('click', function(event) {
+                    dropdownMenu.classList.toggle('hidden');
+                });
 
-            new DateRangePicker(document.querySelector('.date-range'), {
-                // Opciones si necesitas configurar algo específico
-            });
-
-            // Evento cuando cambian las fechas
-            document.querySelector('.date-range').addEventListener('change', function() {
-                const startDate = new Date(startInput.value);
-                const endDate = new Date(endInput.value);
-
-                if (startDate && endDate && startDate <= endDate) {
-                    const diffTime = Math.abs(endDate - startDate);
-                    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-                    resultDiv.textContent = `Días entre fechas: ${diffDays}`;
-                } else {
-                    resultDiv.textContent = "Por favor, seleccione fechas válidas.";
-                }
-            });
-        });
-
-
-
-
-        dropdownButton.addEventListener('click', function(event) {
-            dropdownMenu.classList.toggle('hidden');
-        });
-
-        window.addEventListener('click', function(e) {
-        if (!dropdownButton.contains(e.target) && !dropdownMenu.contains(e.target)) {
-            dropdownMenu.classList.add('hidden');
-        }
-        });
+                window.addEventListener('click', function(e) {
+                    if (!dropdownButton.contains(e.target) && !dropdownMenu.contains(e.target)) {
+                        dropdownMenu.classList.add('hidden');
+                    }
+                });
+            }
         });
 
         function confirmDelete(button) {
             const formId = button.getAttribute('data-form-id');
             const form = document.getElementById(formId);
-            const prefersDarkMode = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+            const prefersDarkMode = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)')
+                .matches;
 
             const swalOptions = {
                 title: 'Are you sure?',
@@ -190,7 +165,8 @@
         }
         document.getElementById('image').onchange = function() {
             if (this.files.length > 3) {
-                const prefersDarkMode = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+                const prefersDarkMode = window.matchMedia && window.matchMedia(
+                    '(prefers-color-scheme: dark)').matches;
 
                 const swalOptions = {
                     title: 'Too Many Files',
@@ -211,25 +187,7 @@
                 this.value = '';
             }
         };
-
-        document.getElementById('startDate').addEventListener('change', calculateDays);
-        document.getElementById('endDate').addEventListener('change', calculateDays);
-
-        function calculateDays() {
-            const startDate = document.getElementById('startDate').value;
-            const endDate = document.getElementById('endDate').value;
-            if (startDate && endDate) {
-                const start = new Date(startDate);
-                const end = new Date(endDate);
-                if (end >= start) {
-                    const diffTime = Math.abs(end - start);
-                    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-                    document.getElementById('result').innerText = diffDays + " days";
-                } else {
-                    document.getElementById('result').innerText = "End date must be after start date.";
-                }
-            }
-        }
+        
     </script>
 
 </body>
