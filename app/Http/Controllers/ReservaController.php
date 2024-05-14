@@ -77,7 +77,7 @@ class ReservaController extends Controller
     {
         $reserva = Reserva::findOrFail($id);
 
-        if ($reserva->user_id === auth()->id()) {
+        if ($reserva->user_id === auth()->id() || auth()->user()->role === 'Admin' || auth()->user()->role === 'Business'){ 
             $reserva->delete();
             return back()->with('alert', [
                 'type' => 'success',

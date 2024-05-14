@@ -193,16 +193,12 @@
                                     <p class="text-lg font-semibold text-gray-700 dark:text-gray-300">Deadline: <span
                                             class="font-normal text-base text-gray-700 dark:text-gray-300">{{ $reserva->formatted_end_date }}</span>
                                     </p>
-                                    <button type="button" onclick="confirmDelete(this)"
-                            data-form-id="delete-reserva-form-{{ $reserva->id }}"
-                            class=" group-hover:flex justify-center items-center bg-red-500 text-white rounded-full w-10 h-10">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                class="w-6 h-6">
-                                <line x1="18" y1="6" x2="6" y2="18"></line>
-                                <line x1="6" y1="6" x2="18" y2="18"></line>
-                            </svg>
-                        </button>
+                                    <button class="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-purple-500 to-pink-500 group-hover:from-purple-500 group-hover:to-pink-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-purple-200 dark:focus:ring-purple-800 type="button" onclick="confirmDelete(this)"
+                                    data-form-id="delete-reserva-form-{{ $reserva->id }}"">
+                                        <span class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
+                                        Cancel
+                                        </span>
+                                        </button>
                                     <form id="delete-reserva-form-{{ $reserva->id }}" method="POST"
                                         action="{{ route('reserva.destroy', $reserva->id) }}" style="display:none;">
                                         @csrf
