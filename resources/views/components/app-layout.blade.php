@@ -16,7 +16,7 @@
 <body class="flex flex-col min-h-screen bg-blue-50 dark:bg-slate-900">
     <header class="bg-white dark:bg-gray-900 py-4 shadow m-4 rounded-lg">
         <div class="container mx-auto flex justify-between items-center px-6">
-            <a class="text-xl font-bold text-gray-700 dark:text-gray-300" href="/">ReservaSphere</a>
+            <a class="text-xl font-bold text-gray-700 dark:text-gray-300" href={{ route('index') }}>ReservaSphere</a>
             <div class="flex">
                 @auth
                     <div class="relative inline-block text-left">
@@ -49,14 +49,14 @@
                                 aria-labelledby="dropdownInformationButton">
                                 @if (Auth::user()->role == 'Admin' || Auth::user()->role == 'Client')
                                     <li>
-                                        <a href="/myreserves"
+                                        <a href={{ route('myreserves') }}
                                             class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">My
                                             reserves</a>
                                     </li>
                                 @endif
                                 @if (Auth::user()->role == 'Admin' || Auth::user()->role == 'Business')
                                     <li>
-                                        <a href="/mybusiness"
+                                        <a href={{ route('mybusinesses') }}
                                             class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">My
                                             business</a>
                                     </li>
@@ -70,7 +70,7 @@
                         </div>
                     </div>
                 @else
-                    <a href="/login"
+                    <a href={{ route('login') }}
                         class="text-gray-700 dark:text-gray-300 font-bold rounded-lg text-lg px-5 inline-flex items-center">Login</a>
                 @endauth
                 <button id="theme-toggle" type="button"

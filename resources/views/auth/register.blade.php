@@ -3,7 +3,7 @@
         <form action="{{ route('register') }}" method="POST">
             @csrf
 
-            
+
             <div class="mb-4">
                 <label for="username"
                     class="block text-gray-700 dark:text-gray-200 text-sm font-bold mb-2 form-control @error('name') is-invalid @enderror">Username</label>
@@ -27,6 +27,9 @@
                     class="block text-gray-700 dark:text-gray-200 text-sm font-bold mb-2">Email</label>
                 <input type="email" id="email" name="email" required
                     class="shadow appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                @error('email')
+                    <p class="text-red-500 text-xs italic">{{ $message }}</p>
+                @enderror
             </div>
 
 
@@ -48,7 +51,7 @@
 
             <div class="mb-4">
                 <label for="role" class="block text-gray-700 dark:text-gray-200 text-sm font-bold mb-2">Role</label>
-                <select id="role"
+                <select id="role" name="role"
                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white">
                     <option>Client</option>
                     <option>Business</option>

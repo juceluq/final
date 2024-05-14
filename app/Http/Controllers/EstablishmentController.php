@@ -18,6 +18,12 @@ class EstablishmentController extends Controller
         return view('index', compact('establishments'));
     }
 
+    public function mybusinesses(){
+        $user = Auth::user();
+        $establishments = Establishment::where('user_id', $user->id)->get();
+        return view('mybusinesses', compact('establishments'));
+    }
+
     public function show($id)
     {
         $user = Auth::user();

@@ -24,7 +24,11 @@ class Auth
                 abort(403, 'Unauthorized access');
             }
         } else {
-            return redirect('/login')->with('error', 'You must login to enter.');
+            return redirect('/login')->with('alert', [
+                'type' => 'error',
+                'title' => 'Error',
+                'message' => 'You must login to enter.'
+            ]);;
         }
     }
 }

@@ -19,7 +19,7 @@ Route::post('/register', [RegisterController::class, 'register'])->name('registe
 
 // Rutas para usuarios autenticados
 Route::middleware('auth')->group(function () {
-    Route::post('/logout', [SessionController::class, 'destroy']);
+    Route::post('/logout', [SessionController::class, 'destroy'])->name('logout');
     Route::get('/establishments/create', [EstablishmentController::class, 'create'])->name('establishments.create');
     Route::post('/establishments', [EstablishmentController::class, 'store'])->name('establishments.store');
     Route::delete('/establishments/{establishment}', [EstablishmentController::class, 'destroy'])->name('establishments.destroy');
@@ -34,6 +34,7 @@ Route::middleware(['auth', Auth::class])->group(function () {
     Route::delete('/reserva/{id}', [ReservaController::class, 'destroy'])->name('reserva.destroy');
 });
 
+Route::get('/mybusinesses', [EstablishmentController::class, 'mybusinesses'])->name('mybusinesses');
 
 
 // Ruta para la página de inicio
