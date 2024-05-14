@@ -18,7 +18,8 @@ class EstablishmentController extends Controller
         return view('index', compact('establishments'));
     }
 
-    public function mybusinesses(){
+    public function mybusinesses()
+    {
         $user = Auth::user();
         $establishments = Establishment::where('user_id', $user->id)->get();
         return view('mybusinesses', compact('establishments'));
@@ -26,17 +27,22 @@ class EstablishmentController extends Controller
 
     public function show($id)
     {
-        $user = Auth::user();
         $establishment = Establishment::findOrFail($id);
+        if (Auth::check()) {
+            $user = Auth::user();
 
-        $alreadyReserved = Reserva::where('user_id', $user->id)
-            ->where('establishment_id', $id)
-            ->exists();
 
-        $reservas = $establishment->reservas;
-        $reservas = Reserva::where('establishment_id', $id)->get();
+            $alreadyReserved = Reserva::where('user_id', $user->id)
+                ->where('establishment_id', $id)
+                ->exists();
 
-        return view('establishment.establishment', compact('establishment', 'alreadyReserved', 'reservas'));
+            $reservas = $establishment->reservas;
+            $reservas = Reserva::where('establishment_id', $id)->get();
+
+            return view('establishment.establishment', compact('establishment', 'alreadyReserved', 'reservas'));
+        } else {
+            return view('establishment.establishment', compact('establishment'));
+        }
     }
 
 
