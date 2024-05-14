@@ -26,10 +26,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/establishments/{establishment}', [EstablishmentController::class, 'show'])->name('establishments.show');
     Route::get('establishments/{establishment}/edit', [EstablishmentController::class, 'edit'])->name('establishments.edit');
     Route::put('establishments/{establishment}', [EstablishmentController::class, 'update'])->name('establishments.update');
-    Route::post('/reservar', [ReservaController::class, 'store'])->name('reserva.store');
 });
 
 Route::middleware(['auth', Auth::class])->group(function () {
+    Route::post('/reservar', [ReservaController::class, 'store'])->name('reserva.store');
     Route::get('/myreserves', [ReservaController::class, 'index'])->name('myreserves');
     Route::delete('/reserva/{id}', [ReservaController::class, 'destroy'])->name('reserva.destroy');
 });

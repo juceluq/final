@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Establishment;
+use App\Models\Reserva;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
@@ -19,8 +20,13 @@ class EstablishmentController extends Controller
 
     public function show($id)
     {
+        $user = Auth::user();
         $establishment = Establishment::findOrFail($id);
-        return view('establishment.establishment', compact('establishment'));
+
+        $alreadyReserved = Reserva::where('user_id', $user->id)
+            ->where('establishment_id', $id)
+            ->exists();
+        return view('establishment.establishment', compact('establishment', 'alreadyReserved'));
     }
 
 
@@ -46,26 +52,26 @@ class EstablishmentController extends Controller
             'images' => 'sometimes|array|max:3',
             'images.*' => 'image|max:15000',
         ]);
-    
+
         $establishment->update($validatedData);
-    
+
         $folderName = 'IMG_' . $establishment->id;
         $folderPath = 'public/images/' . $folderName;
-    
+
         if (!Storage::exists($folderPath)) {
             Storage::makeDirectory($folderPath);
         }
-    
+
         $totalImages = 0;
-    
+
         if ($request->hasFile('images')) {
             $existingImages = $establishment->images;
-    
+
             foreach ($existingImages as $image) {
                 Storage::delete('public/' . $image->filename);
                 $image->delete();
             }
-    
+
             foreach ($request->file('images') as $index => $file) {
                 $newFileName = ($index + 1) . '.' . $file->extension();
                 $file->storeAs($folderPath, $newFileName);
@@ -73,21 +79,21 @@ class EstablishmentController extends Controller
                 $totalImages++;
             }
         }
-    
+
         for ($i = $totalImages + 1; $i <= 3; $i++) {
             $defaultImageFile = 'default/default.jpg';
             $defaultFileName = $i . '.jpg';
             Storage::copy('public/images/' . $defaultImageFile, $folderPath . '/' . $defaultFileName);
             $establishment->images()->create(['filename' => $folderName . '/' . $defaultFileName]);
         }
-    
+
         return redirect()->route('index')->with('alert', [
             'type' => 'success',
             'title' => 'Success!',
             'message' => 'Establishment updated successfully!'
         ]);
     }
-    
+
 
     public function store(Request $request)
     {

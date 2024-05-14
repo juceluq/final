@@ -14,10 +14,25 @@ class ReservaController extends Controller
 
     public function index()
     {
-        $user = Auth::user();
-        $establishments = $user->establishments()->get();
+        $userId = auth()->id();
+        $establishments = Establishment::with(['reservations' => function ($query) use ($userId) {
+            $query->where('user_id', $userId);
+        }])->get();
         return view('myreserves', compact('establishments'));
     }
+
+    public function showReservations(Request $request)
+    {
+        $userId = auth()->id(); 
+        $establishmentId = $request->establishment_id;
+
+        $reservations = Reserva::where('user_id', $userId)
+            ->where('establishment_id', $establishmentId)
+            ->get();
+
+        return view('myreserves', compact('reservations'));
+    }
+
 
     public function store(Request $request)
     {

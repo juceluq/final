@@ -35,8 +35,8 @@
                                     <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
                                         {{ $establishment->name}}
                                     </h5>
-                                    <p class="mb-1 font-normal text-gray-700 dark:text-gray-400 text-center">
-                                        Start:&ensp;{{ $reserva->start_date }}  <br> End:&ensp;{{ $reserva->end_date }} <br>Phone:&ensp;{{ $reserva->phone}}
+                                    <p class="mb-1 font-normal text-gray-700 dark:text-gray-400 text-end">
+                                        Start:&ensp;{{ $reserva->formatted_start_date }}  <br> End:&ensp;{{ $reserva->formatted_end_date }} <br>Phone:&ensp;{{ $reserva->phone}}
                                     </p>
                             </div>
                         </a>
