@@ -141,7 +141,8 @@
                                                 </svg>
                                             </div>
                                             <input type="number" id="phone-input"
-                                                aria-describedby="helper-text-explanation" name="phone" required max="999999999" min="100000000"
+                                                aria-describedby="helper-text-explanation" name="phone" required
+                                                max="999999999" min="100000000"
                                                 class="bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 pl-10 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
                                                 placeholder="Example: 626203212" />
                                         </div>
@@ -166,10 +167,16 @@
                         </form>
                     @endif
                 @elseif (Auth::user()?->role === 'Business')
-                    <span
-                        class="relative inline-flex items-center justify-center px-3 py-5 text-lg font-bold text-gray-700 mt-3
-                        dark:text-gray-300 dark:bg-gray-900 bg-white ">Business
-                        cannot reserve establishments.</span>
+                    @if (Auth::user()->id == $establishment->user_id)
+                    
+                        <span>HOLAAAA</span>
+                    @else
+                        <span
+                            class="relative inline-flex items-center justify-center px-3 py-5 text-lg font-bold text-gray-700 mt-3
+                            dark:text-gray-300 dark:bg-gray-900 bg-white ">Business
+                            cannot reserve establishments.
+                        </span>
+                    @endif
                 @else
                     <div class="mt-9 flex-grow flex items-center justify-center">
                         <div class="relative inline-flex  group">
@@ -178,8 +185,8 @@
                             </div>
                             <button data-modal-target="authentication-modal" data-modal-toggle="authentication-modal"
                                 class="relative inline-flex items-center justify-center px-8 py-4 text-lg font-bold text-gray-700
-    dark:text-gray-300 transition-all duration-200 dark:bg-gray-900 bg-white font-pj
-    rounded-xl focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900"
+                                dark:text-gray-300 transition-all duration-200 dark:bg-gray-900 bg-white font-pj
+                                rounded-xl focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900"
                                 type="button">You must login to reserve this establishment.
                             </button>
 
