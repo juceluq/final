@@ -14,4 +14,14 @@ class Establishment extends Model
     {
         return $this->hasMany(Image::class);
     }
+
+    public function reservations()
+    {
+        return $this->hasMany(Reserva::class);
+    }
+
+    public function users()
+    {
+        return $this->belongsToMany(User::class, 'reservas');
+    }
 }

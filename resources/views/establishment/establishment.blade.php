@@ -131,9 +131,9 @@
                                                 d="M18 13.446a3.02 3.02 0 0 0-.946-1.985l-1.4-1.4a3.054 3.054 0 0 0-4.218 0l-.7.7a.983.983 0 0 1-1.39 0l-2.1-2.1a.983.983 0 0 1 0-1.389l.7-.7a2.98 2.98 0 0 0 0-4.217l-1.4-1.4a2.824 2.824 0 0 0-4.218 0c-3.619 3.619-3 8.229 1.752 12.979C6.785 16.639 9.45 18 11.912 18a7.175 7.175 0 0 0 5.139-2.325A2.9 2.9 0 0 0 18 13.446Z" />
                                         </svg>
                                     </div>
-                                    <input type="text" id="phone-input" aria-describedby="helper-text-explanation" name="phone"
+                                    <input type="number" id="phone-input" aria-describedby="helper-text-explanation" name="phone" required
                                         class="bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 pl-10 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
-                                        placeholder="+34 626 20 32 12" placeholder="Your phone number" />
+                                        placeholder="Example: 626203212" />
                                 </div>
                                 <p id="helper-text-explanation" class="text-sm text-gray-500 dark:text-gray-400 mt-1">
                                     Select a phone number that matches the format.</p>
@@ -232,30 +232,41 @@
     <script>
         $(document).ready(function() {
             $('#reserve-button').prop('disabled', true);
-
+    
             function calcularPrecioTotal() {
                 var startDate = new Date($('#start-date').val());
                 var endDate = new Date($('#end-date').val());
-
-                if (!isNaN(startDate) && !isNaN(endDate) && startDate < endDate) {
+                var currentDate = new Date();
+                currentDate.setHours(0, 0, 0, 0);
+    
+                if (!isNaN(startDate) && !isNaN(endDate) && startDate >= currentDate && startDate < endDate) {
                     var differenceInMs = endDate - startDate;
                     var differenceInDays = differenceInMs / (1000 * 60 * 60 * 24);
                     var establishmentPrice = {{ $establishment->price }};
                     var totalPrice = differenceInDays * establishmentPrice;
-
+    
                     $('#total-price').text('Total Price: ' + totalPrice.toFixed(2) + '€');
                     $('#total-price').show();
-
+    
                     $('#reserve-button').prop('disabled', totalPrice <= 0 || isNaN(totalPrice));
                 } else {
-                    $('#total-price').text('Date must be correct.');
+                    if (startDate < currentDate) {
+                        $('#total-price').text('Start date cannot be in the past.');
+                    } else if (startDate >= endDate) {
+                        $('#total-price').text('End date must be later than start date.');
+                    } else {
+                        $('#total-price').text('Dates must be correct.');
+                    }
                     $('#reserve-button').prop('disabled', true);
                 }
             }
+    
             $('#start-date, #end-date').on('change', function() {
                 calcularPrecioTotal();
             });
+    
             $('#total-price').hide();
         });
     </script>
+    
 </x-app-layout>

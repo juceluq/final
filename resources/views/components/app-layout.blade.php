@@ -45,6 +45,22 @@
                                 <div>{{ Auth::user()->name }}</div>
                                 <div class="font-medium truncate">{{ Auth::user()->email }}</div>
                             </div>
+                            <ul class="py-2 text-sm text-gray-700 dark:text-gray-200"
+                                aria-labelledby="dropdownInformationButton">
+                                @if (Auth::user()->role == 'Admin' || Auth::user()->role == 'Client')
+                                    <li>
+                                        <a href="/myreserves"
+                                            class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">My
+                                            reserves</a>
+                                    </li>
+                                @endif
+                                @if (Auth::user()->role == 'Admin' || Auth::user()->role == 'Business')
+                                    <li>
+                                        <a href="/mybusiness"
+                                            class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">My
+                                            business</a>
+                                    </li>
+                                @endif
                             </ul>
                             <form action="/logout" method="POST">
                                 @csrf
@@ -187,7 +203,6 @@
                 this.value = '';
             }
         };
-        
     </script>
 
 </body>

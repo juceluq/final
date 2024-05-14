@@ -45,4 +45,14 @@ class User extends Authenticatable implements MustVerifyEmail
             'password' => 'hashed',
         ];
     }
+
+    public function reservations()
+    {
+        return $this->hasMany(Reserva::class);
+    }
+
+    public function establishments()
+    {
+        return $this->belongsToMany(Establishment::class, 'reservas');
+    }
 }

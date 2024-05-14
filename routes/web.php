@@ -4,6 +4,7 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\EstablishmentController;
 use App\Http\Controllers\ReservaController;
 use App\Http\Controllers\SessionController;
+use App\Http\Middleware\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth as FacadesAuth;
 
@@ -27,6 +28,12 @@ Route::middleware('auth')->group(function () {
     Route::put('establishments/{establishment}', [EstablishmentController::class, 'update'])->name('establishments.update');
     Route::post('/reservar', [ReservaController::class, 'store'])->name('reserva.store');
 });
+
+Route::middleware(['auth', Auth::class])->group(function () {
+    Route::get('/myreserves', [ReservaController::class, 'index'])->name('myreserves');
+});
+
+
 
 // Ruta para la página de inicio
 Route::get('/', [EstablishmentController::class, 'index'])->name('index');

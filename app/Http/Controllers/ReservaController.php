@@ -11,6 +11,14 @@ use Illuminate\Support\Facades\Log;
 
 class ReservaController extends Controller
 {
+
+    public function index()
+    {
+        $user = Auth::user();
+        $establishments = $user->establishments()->get();
+        return view('index', compact('establishments'));
+    }
+
     public function store(Request $request)
     {
         try {

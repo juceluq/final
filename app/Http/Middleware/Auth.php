@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth as FacadesAuth;
 use Symfony\Component\HttpFoundation\Response;
 
 class Auth
@@ -15,8 +16,13 @@ class Auth
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (auth()->check()) {
-            return $next($request);
+        if (FacadesAuth::check()) {
+            $user = FacadesAuth::user();
+            if ($user->role === 'Admin' || $user->role === 'Client') {
+                return $next($request);
+            } else {
+                abort(403, 'Unauthorized access');
+            }
         } else {
             return redirect('/login')->with('error', 'You must login to enter.');
         }
