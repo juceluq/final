@@ -32,7 +32,11 @@ class EstablishmentController extends Controller
         $alreadyReserved = Reserva::where('user_id', $user->id)
             ->where('establishment_id', $id)
             ->exists();
-        return view('establishment.establishment', compact('establishment', 'alreadyReserved'));
+
+        $reservas = $establishment->reservas;
+        $reservas = Reserva::where('establishment_id', $id)->get();
+
+        return view('establishment.establishment', compact('establishment', 'alreadyReserved', 'reservas'));
     }
 
 

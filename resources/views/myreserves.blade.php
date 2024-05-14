@@ -3,7 +3,7 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
             {{-- TODO View para ver los establecimientos que el cliente ha reservado --}}
             @foreach ($establishments as $establishment)
-                @foreach ($establishment->reservations as $reserva)
+                @foreach ($establishment->reservas as $reserva)
                     <div class="relative group">
                         <button type="button" onclick="confirmDelete(this)"
                             data-form-id="delete-reserva-form-{{ $reserva->id }}"

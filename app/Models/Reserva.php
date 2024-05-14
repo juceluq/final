@@ -19,4 +19,8 @@ class Reserva extends Model
     {
         return Carbon::parse($this->end_date)->format('d-m-Y');
     }
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
 }
