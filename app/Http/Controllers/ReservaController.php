@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Establishment;
 use App\Models\Reserva;
 use DateTime;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
@@ -63,7 +64,7 @@ class ReservaController extends Controller
                 'title' => 'Success!',
                 'message' => 'Reserve made correctly!'
             ]);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return redirect()->back()->with('alert', [
                 'type' => 'error',
                 'title' => 'Error!',
