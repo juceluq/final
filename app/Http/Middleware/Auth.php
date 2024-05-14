@@ -16,19 +16,42 @@ class Auth
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (FacadesAuth::check()) {
-            $user = FacadesAuth::user();
-            if ($user->role === 'Admin' || $user->role === 'Client') {
-                return $next($request);
-            } else {
-                abort(403, 'Unauthorized access');
-            }
-        } else {
+        if (!FacadesAuth::check()) {
             return redirect('/login')->with('alert', [
                 'type' => 'error',
                 'title' => 'Error',
                 'message' => 'You must login to enter.'
-            ]);;
+            ]);
         }
+
+
+        $user = FacadesAuth::user();
+        $routeName = $request->route()->getName();
+
+        switch ($routeName) {
+            case 'mybusinesses':
+                if (!in_array($user->role, ['Business', 'Admin'])) {
+                    return redirect('/')->with('alert', [
+                        'type' => 'danger',
+                        'title' => 'Error!',
+                        'message' => 'You are not allowed to access this page.'
+                    ]);
+                } else {
+                    return $next($request);
+                }
+                break;
+            case 'myreserves':
+                if (!in_array($user->role, ['Client', 'Admin'])) {
+                    return redirect('/')->with('alert', [
+                        'type' => 'danger',
+                        'title' => 'Error!',
+                        'message' => 'You are not allowed to access this page.'
+                    ]);
+                } else {
+                    return $next($request);
+                }
+                break;
+        }
+        return $next($request);
     }
 }

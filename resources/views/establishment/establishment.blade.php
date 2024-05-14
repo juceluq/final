@@ -141,7 +141,7 @@
                                                 </svg>
                                             </div>
                                             <input type="number" id="phone-input"
-                                                aria-describedby="helper-text-explanation" name="phone" required
+                                                aria-describedby="helper-text-explanation" name="phone" required max="999999999" min="100000000"
                                                 class="bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 pl-10 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
                                                 placeholder="Example: 626203212" />
                                         </div>

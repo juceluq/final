@@ -32,9 +32,8 @@ Route::middleware(['auth', Auth::class])->group(function () {
     Route::post('/reservar', [ReservaController::class, 'store'])->name('reserva.store');
     Route::get('/myreserves', [ReservaController::class, 'index'])->name('myreserves');
     Route::delete('/reserva/{id}', [ReservaController::class, 'destroy'])->name('reserva.destroy');
+    Route::get('/mybusinesses', [EstablishmentController::class, 'mybusinesses'])->name('mybusinesses');
 });
-
-Route::get('/mybusinesses', [EstablishmentController::class, 'mybusinesses'])->name('mybusinesses');
 
 
 // Ruta para la página de inicio

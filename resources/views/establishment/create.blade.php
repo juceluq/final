@@ -32,7 +32,7 @@
             <div class="my-4">
                 <label for="price" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Price each night
                     (€):</label>
-                <input type="number" name="price" id="price" required step="0.01"
+                <input type="number" name="price" id="price" required step="1.00" max="999999.99" min="1.00"
                     class="shadow appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700"
                     placeholder="0.00">
             </div>

@@ -48,6 +48,10 @@ class SessionController extends Controller
     public function destroy()
     {
         Auth::logout();
-        return back();
+        return redirect('/')->with('alert', [
+            'type' =>'success',
+            'title' => 'Success!',
+            'message' => 'Logout successful.'
+        ]);
     }
 }
