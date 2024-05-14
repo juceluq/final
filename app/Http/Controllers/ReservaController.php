@@ -16,7 +16,7 @@ class ReservaController extends Controller
     {
         $user = Auth::user();
         $establishments = $user->establishments()->get();
-        return view('index', compact('establishments'));
+        return view('myreserves', compact('establishments'));
     }
 
     public function store(Request $request)
@@ -47,20 +47,37 @@ class ReservaController extends Controller
             return redirect()->route('index')->with('alert', [
                 'type' => 'success',
                 'title' => 'Success!',
-                'message' => 'Reservation made correctly!'
+                'message' => 'Reserve made correctly!'
             ]);
         } catch (\Exception $e) {
-            // Log the error for debugging
-            Log::error('Error in store method: ' . $e->getMessage());
-
-            // Redirect back with error message
             return redirect()->back()->with('alert', [
                 'type' => 'error',
                 'title' => 'Error!',
-                'message' => 'There was an error processing your reservation. Please try again later.'
+                'message' => 'There was an error processing your reserve. Please try again later.'
             ]);
         }
     }
+
+    public function destroy($id)
+    {
+        $reserva = Reserva::findOrFail($id);
+
+        if ($reserva->user_id === auth()->id()) {
+            $reserva->delete();
+            return back()->with('alert', [
+                'type' => 'success',
+                'title' => 'Success!',
+                'message' => 'Your reserve has been canceled successfully!'
+            ]);
+        }
+
+        return back()->with('alert', [
+            'type' => 'error',
+            'title' => 'Error!',
+            'message' => 'There was an error deleting your reserve. Please try again later.'
+        ]);
+    }
+
     private function calculateTotalPrice($establishmentId, $startDate, $endDate)
     {
         $establishment = Establishment::find($establishmentId);

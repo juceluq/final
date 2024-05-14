@@ -31,6 +31,7 @@ Route::middleware('auth')->group(function () {
 
 Route::middleware(['auth', Auth::class])->group(function () {
     Route::get('/myreserves', [ReservaController::class, 'index'])->name('myreserves');
+    Route::delete('/reserva/{id}', [ReservaController::class, 'destroy'])->name('reserva.destroy');
 });
 
 
