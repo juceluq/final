@@ -56,7 +56,6 @@ class ReservaController extends Controller
             $reserva->end_date = $end_date->format('Y-m-d');
             $reserva->phone = $validatedData['phone'];
             $reserva->price = $price;
-            $reserva->status = 'pending';
             $reserva->save();
 
             return redirect()->route('index')->with('alert', [

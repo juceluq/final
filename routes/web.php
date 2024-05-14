@@ -8,10 +8,10 @@ use App\Http\Middleware\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth as FacadesAuth;
 
-//TODO Habilitar las rutas de autenticación predeterminadas de Laravel con verificación de correo electrónico
+//! Habilitar las rutas de autenticación predeterminadas de Laravel con verificación de correo electrónico
 FacadesAuth::routes(['verify' => true]);
 
-//TODO Rutas para usuarios no autenticados
+//! Rutas para usuarios no autenticados
 Route::middleware('guest')->group(function () {
     Route::get('/login', [SessionController::class, 'index'])->name('login');
     Route::post('/login', [SessionController::class, 'store']);
@@ -19,21 +19,19 @@ Route::middleware('guest')->group(function () {
     Route::post('/register', [RegisterController::class, 'register'])->name('register');
 });
 
-//TODO Rutas para usuarios autenticados
-Route::middleware('auth')->group(function () {
+//! Rutas para usuarios autenticados
+Route::middleware(['auth', Auth::class])->group(function () {
     Route::post('/logout', [SessionController::class, 'destroy'])->name('logout');
 
-    //TODO Rutas para establecimientos
+    //! Rutas para establecimientos
     Route::get('/establishments/create', [EstablishmentController::class, 'create'])->name('establishments.create');
     Route::post('/establishments', [EstablishmentController::class, 'store'])->name('establishments.store');
     Route::delete('/establishments/{establishment}', [EstablishmentController::class, 'destroy'])->name('establishments.destroy');
     Route::get('/establishments/{establishment}', [EstablishmentController::class, 'show'])->name('establishments.show');
     Route::get('establishments/{establishment}/edit', [EstablishmentController::class, 'edit'])->name('establishments.edit');
     Route::put('establishments/{establishment}', [EstablishmentController::class, 'update'])->name('establishments.update');
-});
 
-Route::middleware(['auth', Auth::class])->group(function () {
-    //TODO ruta para saber quien puede acceder a estas páginas
+    //! Rutas para reservas
     Route::post('/reservar', [ReservaController::class, 'store'])->name('reserva.store');
     Route::get('/myreserves', [ReservaController::class, 'index'])->name('myreserves');
     Route::delete('/reserva/{id}', [ReservaController::class, 'destroy'])->name('reserva.destroy');
@@ -41,10 +39,10 @@ Route::middleware(['auth', Auth::class])->group(function () {
 });
 
 
-//TODO Ruta para la página de inicio
+//! Ruta para la página de inicio
 Route::get('/', [EstablishmentController::class, 'index'])->name('index');
 
-//TODo Ruta para la verificación de correo electrónico
+//! Ruta para la verificación de correo electrónico
 Route::get('/email/verify', function () {
     return view('auth.verify');
 })->middleware('auth')->name('verification.notice');

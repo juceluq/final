@@ -166,8 +166,9 @@
                                 value="{{ $establishment->id }}">
                         </form>
                     @endif
-                @elseif (Auth::user()?->role === 'Business')
-                    @if (Auth::user()->id == $establishment->user_id)
+                @endif
+                @if (Auth::user()?->role === 'Business' || Auth::user()?->role === 'Admin')
+                    @if (Auth::user()->id == $establishment->user_id || Auth::user()?->role === 'Admin')
                         <h2
                             class="text-2xl font-bold text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-900 px-4 py-2 rounded-lg text-center mt-2 mb-2">
                             RESERVES
@@ -193,12 +194,15 @@
                                     <p class="text-lg font-semibold text-gray-700 dark:text-gray-300">Deadline: <span
                                             class="font-normal text-base text-gray-700 dark:text-gray-300">{{ $reserva->formatted_end_date }}</span>
                                     </p>
-                                    <button class="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-purple-500 to-pink-500 group-hover:from-purple-500 group-hover:to-pink-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-purple-200 dark:focus:ring-purple-800 type="button" onclick="confirmDelete(this)"
-                                    data-form-id="delete-reserva-form-{{ $reserva->id }}"">
-                                        <span class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
-                                        Cancel
+                                    <button
+                                        class="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-purple-500 to-pink-500 group-hover:from-purple-500 group-hover:to-pink-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-purple-200 dark:focus:ring-purple-800 type="button"
+                                        onclick="confirmDelete(this)"
+                                        data-form-id="delete-reserva-form-{{ $reserva->id }}"">
+                                        <span
+                                            class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
+                                            Cancel
                                         </span>
-                                        </button>
+                                    </button>
                                     <form id="delete-reserva-form-{{ $reserva->id }}" method="POST"
                                         action="{{ route('reserva.destroy', $reserva->id) }}" style="display:none;">
                                         @csrf
