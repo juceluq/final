@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\EstablishmentController;
 use App\Http\Controllers\ReservaController;
+use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\SessionController;
 use App\Http\Middleware\Auth;
 use Illuminate\Support\Facades\Route;
@@ -25,10 +26,12 @@ Route::middleware('auth')->group(function () {
     Route::get('/establishments/create', [EstablishmentController::class, 'create'])->name('establishments.create');
     Route::post('/establishments', [EstablishmentController::class, 'store'])->name('establishments.store');
     Route::delete('/establishments/{establishment}', [EstablishmentController::class, 'destroy'])->name('establishments.destroy');
-    Route::get('/establishments/{establishment}', [EstablishmentController::class, 'show'])->name('establishments.show');
     Route::get('establishments/{establishment}/edit', [EstablishmentController::class, 'edit'])->name('establishments.edit');
     Route::put('establishments/{establishment}', [EstablishmentController::class, 'update'])->name('establishments.update');
+    Route::post('/reviews', [ReviewController::class, 'store'])->name('post_review');
 });
+
+Route::get('/establishments/{establishment}', [EstablishmentController::class, 'show'])->name('establishments.show');
 
 
 Route::middleware(['auth', Auth::class])->group(function () {

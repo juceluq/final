@@ -28,20 +28,23 @@ class EstablishmentController extends Controller
     public function show($id)
     {
         $establishment = Establishment::findOrFail($id);
+        $reviews = $establishment->reviews;
         if (Auth::check()) {
             $user = Auth::user();
-
-
             $alreadyReserved = Reserva::where('user_id', $user->id)
                 ->where('establishment_id', $id)
                 ->exists();
-
             $reservas = $establishment->reservas;
             $reservas = Reserva::where('establishment_id', $id)->get();
 
-            return view('establishment.establishment', compact('establishment', 'alreadyReserved', 'reservas'));
+
+            $reservation = Reserva::where('establishment_id', $establishment->id)
+                ->where('user_id', Auth::user()->id)
+                ->first();
+
+            return view('establishment.establishment', compact('establishment', 'alreadyReserved', 'reservas', 'reviews', 'reservation'));
         } else {
-            return view('establishment.establishment', compact('establishment'));
+            return view('establishment.establishment', compact('establishment', 'reviews'));
         }
     }
 

@@ -46,7 +46,7 @@ class User extends Authenticatable implements MustVerifyEmail
         ];
     }
 
-    public function reservations()
+    public function reservas()
     {
         return $this->hasMany(Reserva::class);
     }
@@ -54,5 +54,10 @@ class User extends Authenticatable implements MustVerifyEmail
     public function establishments()
     {
         return $this->belongsToMany(Establishment::class, 'reservas');
+    }
+
+    public function reviews()
+    {
+        return $this->hasMany(Review::class);
     }
 }
