@@ -168,10 +168,10 @@
                     @endif
                 @elseif (Auth::user()?->role === 'Business')
                     @if (Auth::user()->id == $establishment->user_id)
-                    <h2
-                class="text-2xl font-bold text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-900 px-4 py-2 rounded-lg text-center mt-2 mb-2">
-                RESERVES
-            </h2>
+                        <h2
+                            class="text-2xl font-bold text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-900 px-4 py-2 rounded-lg text-center mt-2 mb-2">
+                            RESERVES
+                        </h2>
                         @foreach ($reservas as $reserva)
                             <div class="w-full md:w-2/3 md:pl-6 mt-4 -ml-6">
                                 <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md">
@@ -185,14 +185,29 @@
                                             class="font-normal text-base text-gray-700 dark:text-gray-300">{{ $reserva->phone }}</span>
                                     </p>
                                     <p class="text-lg font-semibold text-gray-700 dark:text-gray-300">Price: <span
-                                        class="font-normal text-base text-gray-700 dark:text-gray-300">{{ $reserva->price }} €</span>
-                                        <p class="text-lg font-semibold text-gray-700 dark:text-gray-300">Start date: <span
+                                            class="font-normal text-base text-gray-700 dark:text-gray-300">{{ $reserva->price }}
+                                            €</span> </p>
+                                    <p class="text-lg font-semibold text-gray-700 dark:text-gray-300">Start date: <span
                                             class="font-normal text-base text-gray-700 dark:text-gray-300">{{ $reserva->formatted_start_date }}</span>
                                     </p>
                                     <p class="text-lg font-semibold text-gray-700 dark:text-gray-300">Deadline: <span
-                                        class="font-normal text-base text-gray-700 dark:text-gray-300">{{ $reserva->formatted_end_date }}</span>
-                                </p>
-                                </p>
+                                            class="font-normal text-base text-gray-700 dark:text-gray-300">{{ $reserva->formatted_end_date }}</span>
+                                    </p>
+                                    <button type="button" onclick="confirmDelete(this)"
+                            data-form-id="delete-reserva-form-{{ $reserva->id }}"
+                            class=" group-hover:flex justify-center items-center bg-red-500 text-white rounded-full w-10 h-10">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                class="w-6 h-6">
+                                <line x1="18" y1="6" x2="6" y2="18"></line>
+                                <line x1="6" y1="6" x2="18" y2="18"></line>
+                            </svg>
+                        </button>
+                                    <form id="delete-reserva-form-{{ $reserva->id }}" method="POST"
+                                        action="{{ route('reserva.destroy', $reserva->id) }}" style="display:none;">
+                                        @csrf
+                                        @method('DELETE')
+                                    </form>
                                 </div>
                         @endforeach
                     @else
