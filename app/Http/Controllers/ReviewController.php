@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Establishment;
 use App\Models\Review;
+use App\Models\Vote;
 use Exception;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
@@ -89,40 +90,21 @@ class ReviewController extends Controller
 
     public function vote(Request $request)
     {
-        $reviewId = $request->input('review_id');
-        $type = $request->input('type');
-
-        $review = Review::findOrFail($reviewId);
-
-        if ($request->session()->has('voted_reviews')) {
-            $votedReviews = $request->session()->get('voted_reviews');
-
-            if (in_array($reviewId, $votedReviews)) {
-                $voteType = $request->session()->get('vote_type_' . $reviewId);
-                if ($voteType === $type) {
-                    return response()->json(['error' => 'Ya has votado este tipo de voto para esta revisión.']);
-                }
-                if ($voteType === 'up') {
-                    $review->votes -= 1;
-                } elseif ($voteType === 'down') {
-                    $review->votes += 1;
-                }
+        $vote = Vote::where('user_id', auth()->id())->where('review_id', $request->review_id)->get();
+        if (count($vote) == 0) {
+            $vote = new Vote();
+            $vote->user_id = auth()->id();
+            $vote->review_id = $request->review_id;
+            $vote->type = $request->type;
+            $vote->save();
+        }else{
+            if($vote[0]->type != $request->type){
+                $vote[0]->type = $request->type;
+                $vote[0]->save();
             }
         }
-
-        if ($type === 'up') {
-            $review->votes += 1;
-        } elseif ($type === 'down') {
-            $review->votes -= 1;
-        }
-
-        $request->session()->put('voted_reviews', [$reviewId]);
-        $request->session()->put('vote_type_' . $reviewId, $type);
-
-        $review->save();
-
-        $request->session()->put('vote_type_' . $reviewId, $type);
-
-        return response()->json(['votes' => $review->votes]);
+        $votesUp = Vote::where('review_id', $request->review_id)->where('type', '1')->get();
+        $votesDown = Vote::where('review_id', $request->review_id)->where('type', '0')->get();
+        return response()->json(['votes' => count($votesUp) - count($votesDown)], 200);
     }
 }

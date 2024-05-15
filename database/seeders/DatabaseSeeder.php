@@ -78,14 +78,13 @@ class DatabaseSeeder extends Seeder
                     'comment' => "This is a sample review $reviewIndex for Establishment $index",
                     'review_date' => now()->subDays(rand(1, 365))
                 ]);
-
-                foreach (range(1, 5) as $votes) {
-                    Vote::factory()->create([
-                        'user_id' => $clientUser->id,
-                        'review_id' => $reviewIndex,
-                        'type' => rand(0, 1)
-                    ]);
-                }
+            }
+            foreach (range(1, 60) as $votes) {
+                Vote::factory()->create([
+                    'user_id' => $clientUser->id,
+                    'review_id' => $votes,
+                    'type' => rand(0, 1)
+                ]);
             }
         }
     }

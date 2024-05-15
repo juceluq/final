@@ -412,7 +412,7 @@
                     <div class="flex items-center mt-4 space-x-4">
                         @if (Auth::check())
                             <p class="text-gray-500 dark:text-gray-400 text-sm">Did you find it useful?</p>
-                            <button class="text-green-500 hover:text-green-700 upvote-btn"
+                            <button class="text-green-500 hover:text-green-700 vote-btn" value="1"
                                 data-review-id="{{ $review->id }}">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 -rotate-90" fill="none"
                                     viewBox="0 0 24 24" stroke="currentColor">
@@ -420,7 +420,7 @@
                                         d="M14 5l7 7m0 0l-7 7m7-7H3" />
                                 </svg>
                             </button>
-                            <button class="text-red-500 hover:text-red-700 downvote-btn"
+                            <button class="text-red-500 hover:text-red-700 vote-btn" value="0"
                                 data-review-id="{{ $review->id }}">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 -rotate-90" fill="none"
                                     viewBox="0 0 24 24" stroke="currentColor">
@@ -431,7 +431,8 @@
                         @endif
 
                         <p class="text-gray-500 dark:text-gray-400 text-sm" id="votes-{{ $review->id }}">
-                            {{ $review->votes }} found it useful</p>
+                            {{ count($review->votes->where('type', '1')) - count($review->votes->where('type', '0')) }}
+                            found it useful</p>
                     </div>
 
                 </article>
@@ -511,20 +512,14 @@
 
         $(document).ready(function() {
 
-            $('.upvote-btn').click(function() {
+
+            $('.vote-btn').click(function() {
                 var reviewId = $(this).data('review-id');
-                var type = 'up';
-                vote(reviewId, type, $(this));
+                var type = $(this).val();
+                vote(reviewId, type);
             });
 
-            $('.downvote-btn').click(function() {
-                var reviewId = $(this).data('review-id');
-                var type = 'down';
-                vote(reviewId, type, $(this));
-            });
-
-            function vote(reviewId, type, button) {
-                button.prop('disabled', true);
+            function vote(reviewId, type) {
 
                 $.ajax({
                     url: '/vote',
@@ -540,6 +535,8 @@
                     console.log(error)
                 });
             }
+
+
 
 
             $('#reserve-button').prop('disabled', true);

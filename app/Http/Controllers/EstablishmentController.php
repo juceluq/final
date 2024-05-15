@@ -28,7 +28,9 @@ class EstablishmentController extends Controller
     public function show($id)
     {
         $establishment = Establishment::findOrFail($id);
-        $reviews = $establishment->reviews->sortByDesc('votes');
+        $reviews = $establishment->reviews->sortByDesc(function ($review) {
+            return $review->votes->count();
+        });        
         $averageRating = $reviews->avg('rating');
         if (Auth::check()) {
             $user = Auth::user();
