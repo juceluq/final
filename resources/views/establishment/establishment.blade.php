@@ -355,7 +355,9 @@
                                     {{ date('j M, Y, H:i', strtotime($review->review_date)) }}
                                 </time>
                             </p>
+                           
                         </div>
+                        
                         @if (Auth::user()?->role === 'Admin' ||
                                 Auth::user()?->id == $review->user_id ||
                                 Auth::user()?->id == $establishment->user_id)
@@ -379,6 +381,7 @@
                                     aria-labelledby="{{ $buttonId }}">
                                     <li>
                                         <button
+                                            class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white font-bold cursor-pointer w-full text-left"
                                             onclick="openEditModal({{ $review->id }}, '{{ $review->comment }}', '{{ $review->rating }}')">Edit</button>
 
                                     </li>
@@ -394,7 +397,15 @@
                                 </ul>
                             </div>
                         @endif
+                        
                     </footer>
+                    @if ($review->created_at != $review->updated_at)
+                    <p class="text-xs text-gray-600 dark:text-gray-400 -mt-3 mb-3 italic">Edited at:<time pubdate
+                            datetime="{{ date('Y-m-d\TH:i', strtotime($review->updated_at)) }}"
+                            title="{{ date('F jS, Y \a\t H:i', strtotime($review->updated_at)) }}">
+                            {{ date('j M, Y, H:i', strtotime($review->updated_at)) }}
+                        </time> </p>
+                @endif
                     <p class="text-gray-500 dark:text-gray-400">{{ $review->comment }}</p>
                     <p class="text-gray-500 dark:text-gray-400 text-sm mt-4 font-bold">Rating: {{ $review->rating }}/5
                     </p>
@@ -423,20 +434,34 @@
                 </div>
 
                 <span class="hidden sm:inline-block sm:align-middle sm:h-screen"></span>&#8203;
-                <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full"
+                <div class="inline-block align-bottom dark:bg-gray-700 bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full"
                     role="dialog" aria-modal="true" aria-labelledby="modal-headline">
                     <form method="POST" action="{{ route('reviews.update', ['review' => '__review']) }}"
-                        class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                        class=" px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                         @csrf
                         @method('PUT')
                         <div>
-                            <label for="comment" class="block text-sm font-medium text-gray-700">Edit Comment</label>
+                            <div class="flex justify-between items-center mb-2">
+                                <label for="comment" class="text-lg font-semibold text-gray-900 dark:text-white">Edit
+                                    Comment</label>
+                                <button type="button"
+                                    class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                                    data-modal-toggle="crud-modal">
+                                    <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                        fill="none" viewBox="0 0 14 14" onclick="closeEditModal()">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                            stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                                    </svg>
+                                    <span class="sr-only">Close modal</span>
+                                </button>
+                            </div>
                             <textarea id="comment" name="comment" rows="3"
-                                class="mt-1 block w-full p-2.5 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"></textarea>
-                            <label for="rating" class="block text-sm font-medium text-gray-700 mt-2">Edit
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"></textarea>
+                            <label for="rating"
+                                class="text-lg font-semibold text-gray-900 dark:text-white mt-4">Edit
                                 rating:</label>
                             <select id="rating" name="rating"
-                                class="text-normal text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 ml-2 pl-2">
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
                                 <option value="1">1</option>
                                 <option value="2">2</option>
                                 <option value="3">3</option>
@@ -470,14 +495,6 @@
         function closeEditModal() {
             document.querySelector('#editReviewModal').classList.add('hidden');
         }
-
-        window.onclick = function(event) {
-            let modal = document.querySelector('#editReviewModal');
-            if (event.target == modal) {
-                closeEditModal();
-            }
-        }
-
 
         $(document).ready(function() {
             $('#reserve-button').prop('disabled', true);
