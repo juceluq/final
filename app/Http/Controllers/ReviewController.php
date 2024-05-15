@@ -87,32 +87,42 @@ class ReviewController extends Controller
         ]);;
     }
 
-    public function sortReviews(Request $request)
+    public function vote(Request $request)
     {
-        $establishmentId = $request->establishmentId; 
-        $sortBy = $request->sortBy;
-    
-        $establishment = Establishment::findOrFail($establishmentId);
-        $query = $establishment->reviews();
-    
-        switch ($sortBy) {
-            case 'votes_desc':
-                $query->orderBy('votes', 'desc');
-                break;
-            case 'votes_asc':
-                $query->orderBy('votes', 'asc');
-                break;
-            case 'rating_desc':
-                $query->orderBy('rating', 'desc');
-                break;
-            case 'rating_asc':
-                $query->orderBy('rating', 'asc');
-                break;
+        $reviewId = $request->input('review_id');
+        $type = $request->input('type');
+
+        $review = Review::findOrFail($reviewId);
+
+        if ($request->session()->has('voted_reviews')) {
+            $votedReviews = $request->session()->get('voted_reviews');
+
+            if (in_array($reviewId, $votedReviews)) {
+                $voteType = $request->session()->get('vote_type_' . $reviewId);
+                if ($voteType === $type) {
+                    return response()->json(['error' => 'Ya has votado este tipo de voto para esta revisión.']);
+                }
+                if ($voteType === 'up') {
+                    $review->votes -= 1;
+                } elseif ($voteType === 'down') {
+                    $review->votes += 1;
+                }
+            }
         }
-    
-        $reviews = $query->get();
-    
-        return view('partials.reviews', compact('reviews')); 
+
+        if ($type === 'up') {
+            $review->votes += 1;
+        } elseif ($type === 'down') {
+            $review->votes -= 1;
+        }
+
+        $request->session()->put('voted_reviews', [$reviewId]);
+        $request->session()->put('vote_type_' . $reviewId, $type);
+
+        $review->save();
+
+        $request->session()->put('vote_type_' . $reviewId, $type);
+
+        return response()->json(['votes' => $review->votes]);
     }
-    
 }

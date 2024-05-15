@@ -32,7 +32,7 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::get('/establishments/{establishment}', [EstablishmentController::class, 'show'])->name('establishments.show');
-
+Route::post('/vote', [ReviewController::class, 'vote']);
 
 Route::middleware(['auth', Auth::class])->group(function () {
     //! ruta para saber quien puede acceder a estas páginas

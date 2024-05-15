@@ -304,23 +304,7 @@
             <div class="flex justify-between items-center mb-6">
                 <h2 class="text-lg lg:text-2xl font-bold text-gray-900 dark:text-white">Discussion
                     ({{ $establishment->reviews->count() }})</h2>
-                <form action="{{ url('ruta_a_tu_vista') }}" method="GET">
-                    <div class="mb-4">
-                        <label for="sort_by" class="text-lg text-gray-900 dark:text-white">Sort by:</label>
-                        <select name="sortReviews" id="sortReviews"
-                            class="form-control bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
-                            <option value="votes_desc">Most Votes</option>
-                            <option value="votes_asc">Least Votes</option>
-                            <option value="rating_desc">Highest Rating</option>
-                            <option value="rating_asc">Lowest Rating</option>
-                        </select>
-                    </div>
-                </form>
             </div>
-            <div id="reviewsContainer">
-                <!-- Aquí se cargan las reseñas -->
-            </div>
-
             @if (Auth::check() && ($reservation || Auth::user()->role === 'Admin'))
                 <form action="{{ route('post_review') }}" method="POST" class="mb-6">
                     @csrf
@@ -426,23 +410,30 @@
                     <p class="text-gray-500 dark:text-gray-400 text-sm mt-4 font-bold">Rating: {{ $review->rating }}/5
                     </p>
                     <div class="flex items-center mt-4 space-x-4">
-                        <p class="text-gray-500 dark:text-gray-400 text-sm">Did you find it useful?</p>
-                        <button class="text-green-500 hover:text-green-700">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 -rotate-90" fill="none"
-                                viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                            </svg>
-                        </button>
-                        <button class="text-red-500 hover:text-red-700">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 -rotate-90" fill="none"
-                                viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-                            </svg>
-                        </button>
-                        <p class="text-gray-500 dark:text-gray-400 text-sm">{{ $review->votes }} found it useful</p>
+                        @if (Auth::check())
+                            <p class="text-gray-500 dark:text-gray-400 text-sm">Did you find it useful?</p>
+                            <button class="text-green-500 hover:text-green-700 upvote-btn"
+                                data-review-id="{{ $review->id }}">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 -rotate-90" fill="none"
+                                    viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                                </svg>
+                            </button>
+                            <button class="text-red-500 hover:text-red-700 downvote-btn"
+                                data-review-id="{{ $review->id }}">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 -rotate-90" fill="none"
+                                    viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                                </svg>
+                            </button>
+                        @endif
+
+                        <p class="text-gray-500 dark:text-gray-400 text-sm" id="votes-{{ $review->id }}">
+                            {{ $review->votes }} found it useful</p>
                     </div>
+
                 </article>
             @endforeach
         </div>
@@ -452,7 +443,7 @@
         <div id="editReviewModal" class="hidden fixed z-10 inset-0 overflow-y-auto">
             <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
                 <div class="fixed inset-0 transition-opacity" aria-hidden="true">
-                    <div class="absolute inset-0 bg-gray-500 opacity-75" onclick="closeEditModal()"></div>
+                    <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
                 </div>
 
                 <span class="hidden sm:inline-block sm:align-middle sm:h-screen"></span>&#8203;
@@ -466,11 +457,11 @@
                             <div class="flex justify-between items-center mb-2">
                                 <label for="comment" class="text-lg font-semibold text-gray-900 dark:text-white">Edit
                                     Comment</label>
-                                <button type="button" onclick="closeEditModal()"
+                                <button type="button"
                                     class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
                                     data-modal-toggle="crud-modal">
                                     <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                                        fill="none" viewBox="0 0 14 14">
+                                        fill="none" viewBox="0 0 14 14" onclick="closeEditModal()">
                                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
                                             stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
                                     </svg>
@@ -519,6 +510,41 @@
         }
 
         $(document).ready(function() {
+
+            $('.upvote-btn').click(function() {
+                var reviewId = $(this).data('review-id');
+                var type = 'up';
+                vote(reviewId, type, $(this));
+            });
+
+            $('.downvote-btn').click(function() {
+                var reviewId = $(this).data('review-id');
+                var type = 'down';
+                vote(reviewId, type, $(this));
+            });
+
+            function vote(reviewId, type, button) {
+                button.prop('disabled', true);
+
+                $.ajax({
+                    url: '/vote',
+                    method: 'POST',
+                    data: {
+                        review_id: reviewId,
+                        type: type,
+                        _token: '{{ csrf_token() }}'
+                    },
+                    success: function(data) {
+                        $('#votes-' + reviewId).text(data.votes + ' found it useful');
+
+                    },
+                    error: function(error) {
+                        console.log(error);
+                    }
+                });
+            }
+
+
             $('#reserve-button').prop('disabled', true);
 
             function calcularPrecioTotal() {
