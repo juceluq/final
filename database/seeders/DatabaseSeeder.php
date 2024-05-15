@@ -74,6 +74,7 @@ class DatabaseSeeder extends Seeder
                     'user_id' => $clientUser->id,
                     'establishment_id' => $establishment->id,
                     'rating' => rand(1, 5),
+                    'votes' => rand(1, 10),
                     'comment' => "This is a sample review $reviewIndex for Establishment $index",
                     'review_date' => now()->subDays(rand(1, 365))
                 ]);

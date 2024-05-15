@@ -20,6 +20,7 @@ return new class extends Migration
             $table->foreignIdFor(User::class)->onDelete('cascade');
             $table->foreignIdFor(Establishment::class)->onDelete('cascade');
             $table->integer('rating');
+            $table->integer('votes');
             $table->text('comment');
             $table->dateTime('review_date');
             $table->timestamps();
