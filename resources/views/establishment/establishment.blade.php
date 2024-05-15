@@ -376,18 +376,19 @@
                             <div id="{{ $dropdownId }}"
                                 class="hidden z-10 w-36 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600">
                                 <ul class="py-1 text-sm text-gray-700 dark:text-gray-200"
-                                    aria-labelledby="dropdownMenuIconHorizontalButton">
+                                    aria-labelledby="{{ $buttonId }}">
                                     <li>
-                                        <a href="#"
-                                            class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Edit</a>
+                                        <button
+                                            onclick="openEditModal({{ $review->id }}, '{{ $review->comment }}', '{{ $review->rating }}')">Edit</button>
+
                                     </li>
                                     <li>
                                         <form id="delete-form-{{ $review->id }}" method="POST"
-                                              action="{{ route('reviews.destroy', $review->id) }}">
+                                            action="{{ route('reviews.destroy', $review->id) }}">
                                             @csrf
                                             @method('DELETE')
                                             <a onclick="event.preventDefault(); document.getElementById('delete-form-{{ $review->id }}').submit();"
-                                               class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white text-red-500 font-bold cursor-pointer">Delete</a>
+                                                class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white text-red-500 font-bold cursor-pointer">Delete</a>
                                         </form>
                                     </li>
                                 </ul>
@@ -413,10 +414,71 @@
             @endforeach
         </div>
         </article>
+
+        {{-- TODO Modal edit review --}}
+        <div id="editReviewModal" class="hidden fixed z-10 inset-0 overflow-y-auto">
+            <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+                <div class="fixed inset-0 transition-opacity" aria-hidden="true">
+                    <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
+                </div>
+
+                <span class="hidden sm:inline-block sm:align-middle sm:h-screen"></span>&#8203;
+                <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full"
+                    role="dialog" aria-modal="true" aria-labelledby="modal-headline">
+                    <form method="POST" action="{{ route('reviews.update', ['review' => '__review']) }}"
+                        class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                        @csrf
+                        @method('PUT')
+                        <div>
+                            <label for="comment" class="block text-sm font-medium text-gray-700">Edit Comment</label>
+                            <textarea id="comment" name="comment" rows="3"
+                                class="mt-1 block w-full p-2.5 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"></textarea>
+                            <label for="rating" class="block text-sm font-medium text-gray-700 mt-2">Edit
+                                rating:</label>
+                            <select id="rating" name="rating"
+                                class="text-normal text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 ml-2 pl-2">
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                            </select>
+
+                        </div>
+                        <div class="mt-5 sm:mt-6">
+                            <button type="submit"
+                                class="inline-flex justify-center w-full rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-500 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                                Save changes
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
         </div>
     </section>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
+        function openEditModal(reviewId, comment, rating) {
+            document.querySelector('#editReviewModal form').action = `/reviews/${reviewId}`;
+            document.querySelector('#editReviewModal #comment').value = comment;
+            document.querySelector('#editReviewModal #rating').value = rating;
+            document.querySelector('#editReviewModal').classList.remove('hidden');
+        }
+
+        function closeEditModal() {
+            document.querySelector('#editReviewModal').classList.add('hidden');
+        }
+
+        window.onclick = function(event) {
+            let modal = document.querySelector('#editReviewModal');
+            if (event.target == modal) {
+                closeEditModal();
+            }
+        }
+
+
         $(document).ready(function() {
             $('#reserve-button').prop('disabled', true);
 

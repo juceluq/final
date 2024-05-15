@@ -60,9 +60,29 @@ class ReviewController extends Controller
 
 
         return redirect()->back()->with('alert', [
-            'type' => 'Success',
+            'type' => 'success',
             'title' => 'Success!',
             'message' => 'Your post has been deleted.',
         ]);
     }
+
+    public function update(Request $request, $id)
+{
+    $request->validate([
+        'comment' => 'required|string',
+    ]);
+
+    $review = Review::findOrFail($id);
+
+    $review->comment = $request->comment;
+    $review-> rating = $request->rating;
+    $review->save();
+
+    return redirect()->back()->with('alert', [
+        'type' => 'success',
+        'title' => 'Success!',
+        'message' => 'Your post has been updated successfully.',
+    ]);;
+}
+
 }

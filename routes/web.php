@@ -30,6 +30,7 @@ Route::middleware('auth')->group(function () {
     Route::put('establishments/{establishment}', [EstablishmentController::class, 'update'])->name('establishments.update');
     Route::post('/reviews', [ReviewController::class, 'store'])->name('post_review');
     Route::delete('/reviews/{review}', [ReviewController::class, 'destroy'])->name('reviews.destroy');
+    Route::put('/reviews/{review}', [ReviewController::class, 'update'])->name('reviews.update');
 });
 
 Route::get('/establishments/{establishment}', [EstablishmentController::class, 'show'])->name('establishments.show');
