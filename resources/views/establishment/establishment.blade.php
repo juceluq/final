@@ -82,7 +82,7 @@
                     <p class="text-lg font-semibold text-gray-700 dark:text-gray-300">Description:</p>
                     <p class="text-gray-700 dark:text-gray-300 mb-4">{{ $establishment->description }}</p>
                     <p class=" text-lg font-semibold text-gray-700 dark:text-gray-300">Average Rating:</p>
-                    <p class="text-gray-700 dark:text-gray-300 mb-4">{{ number_format($averageRating, 2) }}</p>
+                    <p class="text-gray-700 dark:text-gray-300 mb-4">{{ number_format($averageRating, 2) }}/5</p>
                 </div>
 
                 @if (Auth::user()?->role === 'Admin' || Auth::user()?->role === 'Client')
