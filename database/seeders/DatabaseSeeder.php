@@ -6,6 +6,7 @@ use App\Models\Establishment;
 use App\Models\Reserva;
 use App\Models\Review;
 use App\Models\User;
+use App\Models\Vote;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -74,10 +75,17 @@ class DatabaseSeeder extends Seeder
                     'user_id' => $clientUser->id,
                     'establishment_id' => $establishment->id,
                     'rating' => rand(1, 5),
-                    'votes' => rand(1, 10),
                     'comment' => "This is a sample review $reviewIndex for Establishment $index",
                     'review_date' => now()->subDays(rand(1, 365))
                 ]);
+
+                foreach (range(1, 5) as $votes) {
+                    Vote::factory()->create([
+                        'user_id' => $clientUser->id,
+                        'review_id' => $reviewIndex,
+                        'type' => rand(0, 1)
+                    ]);
+                }
             }
         }
     }

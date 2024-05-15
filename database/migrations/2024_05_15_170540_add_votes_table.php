@@ -1,7 +1,6 @@
 <?php
 
-use App\Models\Establishment;
-use App\Models\Reserva;
+use App\Models\Review;
 use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -14,14 +13,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('reviews', function (Blueprint $table) {
+        Schema::create('votes', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Reserva::class)->onDelete('cascade');
             $table->foreignIdFor(User::class)->onDelete('cascade');
-            $table->foreignIdFor(Establishment::class)->onDelete('cascade');
-            $table->integer('rating');
-            $table->text('comment');
-            $table->dateTime('review_date');
+            $table->foreignIdFor(Review::class)->onDelete('cascade');
+            $table->boolean('type');
             $table->timestamps();
         });
     }
@@ -31,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('reviews');
+        //
     }
 };

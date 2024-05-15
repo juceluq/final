@@ -533,14 +533,11 @@
                         review_id: reviewId,
                         type: type,
                         _token: '{{ csrf_token() }}'
-                    },
-                    success: function(data) {
-                        $('#votes-' + reviewId).text(data.votes + ' found it useful');
-
-                    },
-                    error: function(error) {
-                        console.log(error);
                     }
+                }).done((data) => {
+                    $('#votes-' + reviewId).text(data.votes + ' found it useful');
+                }).catch(function(error) {
+                    console.log(error)
                 });
             }
 
