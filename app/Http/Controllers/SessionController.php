@@ -18,12 +18,14 @@ class SessionController extends Controller
     }
 
     public function store(Request $request)
-    {
-        $atributos = $request->validate([
-            "username" => "required",
-            "password" => "required"
-        ]);
-        if (Auth::attempt($atributos)) {
+{
+    $atributos = $request->validate([
+        "username" => "required",
+        "password" => "required"
+    ]);
+    
+    if (Auth::attempt($atributos)) {
+        if (Auth::user()->hasVerifiedEmail()) {
             if (str_contains(back()->getTargetUrl(), "/login")) {
                 return redirect('/')->with('alert', [
                     'type' => 'success',
@@ -37,13 +39,23 @@ class SessionController extends Controller
                     'message' => 'Login successful.'
                 ]);
             }
+        } else {
+            Auth::logout();
+            return back()->with('alert', [
+                'type' => 'danger',
+                'title' => 'Error!',
+                'message' => 'Please verify your email before logging in.'
+            ]);
         }
-        return back()->with('alert', [
-            'type' => 'danger',
-            'title' => 'Error!',
-            'message' => 'Incorrect credentials.'
-        ]);;
     }
+
+    return back()->with('alert', [
+        'type' => 'danger',
+        'title' => 'Error!',
+        'message' => 'Incorrect credentials.'
+    ]);
+}
+
 
     public function destroy()
     {
