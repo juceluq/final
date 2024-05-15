@@ -6,6 +6,9 @@ use App\Http\Controllers\ReservaController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\SessionController;
 use App\Http\Middleware\Auth;
+use App\Models\User;
+use Illuminate\Auth\Events\Verified;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth as FacadesAuth;
 
@@ -30,7 +33,18 @@ Route::middleware('auth')->group(function () {
     Route::delete('/reviews/{review}', [ReviewController::class, 'destroy'])->name('reviews.destroy');
     Route::put('/reviews/{review}', [ReviewController::class, 'update'])->name('reviews.update');
 });
+Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
+    $user = User::findOrFail($request->route('id'));
 
+    if ($user->hasVerifiedEmail()) {
+        return redirect('/');
+    }
+
+    $user->markEmailAsVerified();
+    event(new Verified($user));
+
+    return redirect('/');
+})->name('verification.verify');
 Route::get('/establishments/{establishment}', [EstablishmentController::class, 'show'])->name('establishments.show');
 Route::post('/vote', [ReviewController::class, 'vote']);
 

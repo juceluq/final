@@ -1,7 +1,7 @@
 <x-app-layout>
     <div class="max-w-lg mx-auto p-6 bg-white dark:bg-gray-900 shadow-md rounded-lg">
 @if (Auth::check())
-{{Auth::logout}}
+{{Auth::logout()}}
     
 @endif
         <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Verify Your Email Address</h5>
