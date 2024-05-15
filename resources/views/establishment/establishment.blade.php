@@ -80,7 +80,9 @@
                     <p class="text-lg font-semibold text-gray-700 dark:text-gray-300">Category:</p>
                     <p class="text-gray-700 dark:text-gray-300 mb-4">{{ $establishment->category }}</p>
                     <p class="text-lg font-semibold text-gray-700 dark:text-gray-300">Description:</p>
-                    <p class="mt-2 text-gray-700 dark:text-gray-300">{{ $establishment->description }}</p>
+                    <p class="text-gray-700 dark:text-gray-300 mb-4">{{ $establishment->description }}</p>
+                    <p class=" text-lg font-semibold text-gray-700 dark:text-gray-300">Average Rating:</p>
+                    <p class="text-gray-700 dark:text-gray-300 mb-4">{{ number_format($averageRating, 2) }}</p>
                 </div>
 
                 @if (Auth::user()?->role === 'Admin' || Auth::user()?->role === 'Client')
@@ -384,6 +386,7 @@
                         @endif
                     </footer>
                     <p class="text-gray-500 dark:text-gray-400">{{ $review->comment }}</p>
+                    <p class="text-gray-500 dark:text-gray-400 text-sm mt-4 font-bold">Rating: {{ $review->rating }}/5</p>
                     <div class="flex items-center mt-4 space-x-4">
                         <button type="button"
                             class="flex items-center text-sm text-gray-500 hover:underline dark:text-gray-400 font-medium">

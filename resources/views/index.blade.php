@@ -2,7 +2,11 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
             @foreach ($establishments as $establishment)
-            {{-- TODO Página principal (se ven todos los establecimientos) --}}
+                {{-- TODO Página principal (se ven todos los establecimientos) --}}
+                @php
+                    $reviews = $establishment->reviews;
+                    $averageRating = $reviews->avg('rating');
+                @endphp
                 <div class="relative group">
                     @if (auth()->check() &&
                             (Auth::user()->role === 'Admin' ||
@@ -39,6 +43,10 @@
                             <span
                                 class="absolute top-2 left-2 bg-white bg-opacity-90 rounded-full px-3 py-1 text-xs font-semibold text-gray-900 shadow">
                                 {{ number_format($establishment->price, 2) }}€
+                            </span>
+                            <span
+                                class="absolute top-2 right-2 bg-white bg-opacity-90 rounded-full px-3 py-1 text-xs font-semibold text-gray-900 shadow">
+                                {{ number_format($averageRating, 2) }} / 5
                             </span>
                             <img src="{{ asset('storage/images/' . $establishment->images->first()->filename) }}"
                                 alt="{{ $establishment->name }}"

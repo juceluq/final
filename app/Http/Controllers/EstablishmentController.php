@@ -29,6 +29,7 @@ class EstablishmentController extends Controller
     {
         $establishment = Establishment::findOrFail($id);
         $reviews = $establishment->reviews;
+        $averageRating = $reviews->avg('rating');
         if (Auth::check()) {
             $user = Auth::user();
             $alreadyReserved = Reserva::where('user_id', $user->id)
@@ -48,9 +49,11 @@ class EstablishmentController extends Controller
                 ->where('user_id', Auth::user()->id)
                 ->first();
 
-            return view('establishment.establishment', compact('establishment', 'alreadyReserved', 'reservas', 'reviews', 'reservation', 'reservaId'));
+                
+
+            return view('establishment.establishment', compact('establishment', 'alreadyReserved', 'reservas', 'reviews', 'averageRating', 'reservation', 'reservaId'));
         } else {
-            return view('establishment.establishment', compact('establishment', 'reviews'));
+            return view('establishment.establishment', compact('establishment', 'reviews', 'averageRating'));
         }
     }
 
