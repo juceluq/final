@@ -175,8 +175,9 @@
                             class="text-2xl font-bold text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-900 px-4 py-2 rounded-lg text-center mt-2 mb-2">
                             RESERVES
                         </h2>
+                        <div class="flex flex-wrap -mx-3">
                         @foreach ($reservas as $reserva)
-                            <div class="w-full md:w-2/3 md:pl-6 mt-4 -ml-6">
+                            <div class="w-full md:w-1/2 px-3 mb-6">
                                 <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md">
                                     <p class="text-lg font-semibold text-gray-700 dark:text-gray-300">Name: <span
                                             class="font-normal text-base text-gray-700 dark:text-gray-300">{{ $reserva->user->name }}</span>
@@ -211,7 +212,10 @@
                                         @method('DELETE')
                                     </form>
                                 </div>
+                            </div>
                         @endforeach
+                    </div>
+
                     @else
                         <span
                             class="relative inline-flex items-center justify-center px-3 py-5 text-lg font-bold text-gray-700 mt-3
@@ -355,9 +359,9 @@
                                     {{ date('j M, Y, H:i', strtotime($review->review_date)) }}
                                 </time>
                             </p>
-                           
+
                         </div>
-                        
+
                         @if (Auth::user()?->role === 'Admin' ||
                                 Auth::user()?->id == $review->user_id ||
                                 Auth::user()?->id == $establishment->user_id)
@@ -397,15 +401,15 @@
                                 </ul>
                             </div>
                         @endif
-                        
+
                     </footer>
                     @if ($review->created_at != $review->updated_at)
-                    <p class="text-xs text-gray-600 dark:text-gray-400 -mt-3 mb-3 italic">Edited at:<time pubdate
-                            datetime="{{ date('Y-m-d\TH:i', strtotime($review->updated_at)) }}"
-                            title="{{ date('F jS, Y \a\t H:i', strtotime($review->updated_at)) }}">
-                            {{ date('j M, Y, H:i', strtotime($review->updated_at)) }}
-                        </time> </p>
-                @endif
+                        <p class="text-xs text-gray-600 dark:text-gray-400 -mt-3 mb-3 italic">Edited at:<time pubdate
+                                datetime="{{ date('Y-m-d\TH:i', strtotime($review->updated_at)) }}"
+                                title="{{ date('F jS, Y \a\t H:i', strtotime($review->updated_at)) }}">
+                                {{ date('j M, Y, H:i', strtotime($review->updated_at)) }}
+                            </time> </p>
+                    @endif
                     <p class="text-gray-500 dark:text-gray-400">{{ $review->comment }}</p>
                     <p class="text-gray-500 dark:text-gray-400 text-sm mt-4 font-bold">Rating: {{ $review->rating }}/5
                     </p>

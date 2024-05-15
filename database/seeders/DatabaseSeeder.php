@@ -3,6 +3,8 @@
 namespace Database\Seeders;
 
 use App\Models\Establishment;
+use App\Models\Reserva;
+use App\Models\Review;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -54,6 +56,27 @@ class DatabaseSeeder extends Seeder
                 $filename = "default/default.jpg";
 
                 $establishment->images()->create(['filename' => $filename]);
+            }
+            foreach (range(1, 5) as $reservaIndex) {
+                Reserva::factory()->create([
+                    'user_id' => $clientUser->id,
+                    'establishment_id' => $establishment->id,
+                    'start_date' => now()->addDays($reservaIndex * 10),
+                    'end_date' => now()->addDays($reservaIndex * 10 + 5),
+                    'phone' => rand(600000000, 699999999),
+                    'price' => rand(100, 500)
+                ]);
+            }
+
+            foreach (range(1, 5) as $reviewIndex) {
+                Review::factory()->create([
+                    'reserva_id' => $establishment->reservas->random()->id,
+                    'user_id' => $clientUser->id,
+                    'establishment_id' => $establishment->id,
+                    'rating' => rand(1, 5),
+                    'comment' => "This is a sample review $reviewIndex for Establishment $index",
+                    'review_date' => now()->subDays(rand(1, 365))
+                ]);
             }
         }
     }
