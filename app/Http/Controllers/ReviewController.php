@@ -23,7 +23,8 @@ class ReviewController extends Controller
             $review->comment = $request->comment;
             $review->user_id = auth()->id(); 
             $review->establishment_id = $request->establishment_id;
-            $review->reserva_id = $request->reserva_id; 
+            $review->reserva_id = $request->reserva_id;
+            $review->rating = $request->rating;
             $review->review_date = now();
             $review->save();
         

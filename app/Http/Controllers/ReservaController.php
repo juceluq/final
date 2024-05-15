@@ -65,6 +65,8 @@ class ReservaController extends Controller
                 'message' => 'Reserve made correctly!'
             ]);
         } catch (Exception $e) {
+            Log::error('Error: ' . $e->getMessage());
+
             return redirect()->back()->with('alert', [
                 'type' => 'error',
                 'title' => 'Error!',

@@ -42,7 +42,8 @@ class EstablishmentController extends Controller
             $reserva = Reserva::where('user_id', $userId)
                 ->where('establishment_id', $id)
                 ->first();
-            $reservaId = $reserva->id;
+
+            $reservaId = $reserva?->id;
             $reservation = Reserva::where('establishment_id', $establishment->id)
                 ->where('user_id', Auth::user()->id)
                 ->first();

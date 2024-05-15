@@ -302,7 +302,7 @@
 
                 @endphp
 
-                @if ($reservation || Auth::user()->role === 'Admin')
+                @if ($reservation || Auth::user()->role === 'Admin' || Auth::user()?->id == $establishment->user_id)
                     <form action="{{ route('post_review') }}" method="POST" class="mb-6">
                         @csrf
                         <div
@@ -311,8 +311,20 @@
                                 class="px-0 w-full text-sm text-gray-900 border-0 focus:ring-0 focus:outline-none dark:text-white dark:placeholder-gray-400 dark:bg-gray-800"
                                 placeholder="Write a comment..." required></textarea>
                         </div>
+                        <div class="flex items-center justify-start mb-4">
+                            <label for="rating"
+                                class="text-sm font-medium text-gray-900 dark:text-white">Rating:</label>
+                            <select id="rating" name="rating"
+                                class="text-normal text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 ml-2 pl-2">
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                            </select>
+                        </div>
                         <input type="hidden" name="establishment_id" value="{{ $establishment->id }}">
-                        <input type="hidden" name="reserva_id" value="{{ $reservaId  }}">
+                        <input type="hidden" name="reserva_id" value="{{ $reservaId }}">
                         <button
                             class="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-purple-500 to-pink-500 group-hover:from-purple-500 group-hover:to-pink-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-purple-200 dark:focus:ring-purple-800"
                             type="submit">
@@ -336,38 +348,40 @@
                             </p>
                             <p class="text-sm text-gray-600 dark:text-gray-400 mr-4">({{ $review->user->email }})</p>
                             <p class="text-sm text-gray-600 dark:text-gray-400"><time pubdate
-                                    datetime="{{ date('Y-m-d', strtotime($review->review_date)) }}"
-                                    title="{{ date('F jS, Y', strtotime($review->review_date)) }}">
-                                    {{ date('j, M, Y', strtotime($review->review_date)) }}
+                                    datetime="{{ date('Y-m-d\TH:i', strtotime($review->review_date)) }}"
+                                    title="{{ date('F jS, Y \a\t H:i', strtotime($review->review_date)) }}">
+                                    {{ date('j M, Y, H:i', strtotime($review->review_date)) }}
                                 </time>
                             </p>
                         </div>
-                        <button id="dropdownComment1Button" data-dropdown-toggle="dropdownComment1"
-                            class="inline-flex items-center p-2 text-sm font-medium text-center text-gray-500 dark:text-gray-400 bg-white rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-50 dark:bg-gray-900 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
-                            type="button">
-                            <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                                fill="currentColor" viewBox="0 0 16 3">
-                                <path
-                                    d="M2 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm6.041 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM14 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Z" />
-                            </svg>
-                            <span class="sr-only">Comment settings</span>
-                        </button>
-                        <div id="dropdownComment1"
-                            class="hidden z-10 w-36 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600">
-                            <ul class="py-1 text-sm text-gray-700 dark:text-gray-200"
-                                aria-labelledby="dropdownMenuIconHorizontalButton">
-                                <li>
-                                    <a href="#"
-                                        class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Edit</a>
-                                </li>
-                                @if (Auth::user()?->role === 'Admin' || Auth::user()->id == $review->user_id)
+                        @if (Auth::user()?->role === 'Admin' ||
+                                Auth::user()?->id == $review->user_id ||
+                                Auth::user()?->id == $establishment->user_id)
+                            <button id="dropdownComment1Button" data-dropdown-toggle="dropdownComment1"
+                                class="inline-flex items-center p-2 text-sm font-medium text-center text-gray-500 dark:text-gray-400 bg-white rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-50 dark:bg-gray-900 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+                                type="button">
+                                <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                    fill="currentColor" viewBox="0 0 16 3">
+                                    <path
+                                        d="M2 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm6.041 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM14 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Z" />
+                                </svg>
+                                <span class="sr-only">Comment settings</span>
+                            </button>
+                            <div id="dropdownComment1"
+                                class="hidden z-10 w-36 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600">
+                                <ul class="py-1 text-sm text-gray-700 dark:text-gray-200"
+                                    aria-labelledby="dropdownMenuIconHorizontalButton">
                                     <li>
                                         <a href="#"
                                             class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Remove</a>
                                     </li>
-                                @endif
-                            </ul>
-                        </div>
+                                    <li>
+                                        <a href="#"
+                                            class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Edit</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        @endif
                     </footer>
                     <p class="text-gray-500 dark:text-gray-400">{{ $review->comment }}</p>
                     <div class="flex items-center mt-4 space-x-4">
