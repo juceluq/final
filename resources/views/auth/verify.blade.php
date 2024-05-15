@@ -1,6 +1,9 @@
 <x-app-layout>
     <div class="max-w-lg mx-auto p-6 bg-white dark:bg-gray-900 shadow-md rounded-lg">
-
+@if (Auth::check())
+{{Auth::logout}}
+    
+@endif
         <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Verify Your Email Address</h5>
         @if (session('resent'))
                 <x-alert type="success" title="Success!">A fresh verification link has been sent to your email address.</x-alert>
