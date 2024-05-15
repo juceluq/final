@@ -28,7 +28,7 @@ class EstablishmentController extends Controller
     public function show($id)
     {
         $establishment = Establishment::findOrFail($id);
-        $reviews = $establishment->reviews;
+        $reviews = $establishment->reviews->sortByDesc('votes');
         $averageRating = $reviews->avg('rating');
         if (Auth::check()) {
             $user = Auth::user();
@@ -67,7 +67,7 @@ class EstablishmentController extends Controller
                 'message' => 'You dont are authorize to enter this page!'
             ]);
         }
-    
+
         return view('establishments.create');
     }
 

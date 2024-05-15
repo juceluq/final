@@ -176,46 +176,48 @@
                             RESERVES
                         </h2>
                         <div class="flex flex-wrap -mx-3">
-                        @foreach ($reservas as $reserva)
-                            <div class="w-full md:w-1/2 px-3 mb-6">
-                                <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md">
-                                    <p class="text-lg font-semibold text-gray-700 dark:text-gray-300">Name: <span
-                                            class="font-normal text-base text-gray-700 dark:text-gray-300">{{ $reserva->user->name }}</span>
-                                    </p>
-                                    <p class="text-lg font-semibold text-gray-700 dark:text-gray-300">Email: <span
-                                            class="font-normal text-base text-gray-700 dark:text-gray-300">{{ $reserva->user->email }}</span>
-                                    </p>
-                                    <p class="text-lg font-semibold text-gray-700 dark:text-gray-300">Phone: <span
-                                            class="font-normal text-base text-gray-700 dark:text-gray-300">{{ $reserva->phone }}</span>
-                                    </p>
-                                    <p class="text-lg font-semibold text-gray-700 dark:text-gray-300">Price: <span
-                                            class="font-normal text-base text-gray-700 dark:text-gray-300">{{ $reserva->price }}
-                                            €</span> </p>
-                                    <p class="text-lg font-semibold text-gray-700 dark:text-gray-300">Start date: <span
-                                            class="font-normal text-base text-gray-700 dark:text-gray-300">{{ $reserva->formatted_start_date }}</span>
-                                    </p>
-                                    <p class="text-lg font-semibold text-gray-700 dark:text-gray-300">Deadline: <span
-                                            class="font-normal text-base text-gray-700 dark:text-gray-300">{{ $reserva->formatted_end_date }}</span>
-                                    </p>
-                                    <button
-                                        class="relative inline-flex items-center justify-center p-0.5 mb-2 mt-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-purple-500 to-pink-500 group-hover:from-purple-500 group-hover:to-pink-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-purple-200 dark:focus:ring-purple-800 type="button"
-                                        onclick="confirmDelete(this)"
-                                        data-form-id="delete-reserva-form-{{ $reserva->id }}"">
-                                        <span
-                                            class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
-                                            Cancel
-                                        </span>
-                                    </button>
-                                    <form id="delete-reserva-form-{{ $reserva->id }}" method="POST"
-                                        action="{{ route('reserva.destroy', $reserva->id) }}" style="display:none;">
-                                        @csrf
-                                        @method('DELETE')
-                                    </form>
+                            @foreach ($reservas as $reserva)
+                                <div class="w-full md:w-1/2 px-3 mb-6">
+                                    <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md">
+                                        <p class="text-lg font-semibold text-gray-700 dark:text-gray-300">Name: <span
+                                                class="font-normal text-base text-gray-700 dark:text-gray-300">{{ $reserva->user->name }}</span>
+                                        </p>
+                                        <p class="text-lg font-semibold text-gray-700 dark:text-gray-300">Email: <span
+                                                class="font-normal text-base text-gray-700 dark:text-gray-300">{{ $reserva->user->email }}</span>
+                                        </p>
+                                        <p class="text-lg font-semibold text-gray-700 dark:text-gray-300">Phone: <span
+                                                class="font-normal text-base text-gray-700 dark:text-gray-300">{{ $reserva->phone }}</span>
+                                        </p>
+                                        <p class="text-lg font-semibold text-gray-700 dark:text-gray-300">Price: <span
+                                                class="font-normal text-base text-gray-700 dark:text-gray-300">{{ $reserva->price }}
+                                                €</span> </p>
+                                        <p class="text-lg font-semibold text-gray-700 dark:text-gray-300">Start date:
+                                            <span
+                                                class="font-normal text-base text-gray-700 dark:text-gray-300">{{ $reserva->formatted_start_date }}</span>
+                                        </p>
+                                        <p class="text-lg font-semibold text-gray-700 dark:text-gray-300">Deadline:
+                                            <span
+                                                class="font-normal text-base text-gray-700 dark:text-gray-300">{{ $reserva->formatted_end_date }}</span>
+                                        </p>
+                                        <button
+                                            class="relative inline-flex items-center justify-center p-0.5 mb-2 mt-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-purple-500 to-pink-500 group-hover:from-purple-500 group-hover:to-pink-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-purple-200 dark:focus:ring-purple-800 type="button"
+                                            onclick="confirmDelete(this)"
+                                            data-form-id="delete-reserva-form-{{ $reserva->id }}"">
+                                            <span
+                                                class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
+                                                Cancel
+                                            </span>
+                                        </button>
+                                        <form id="delete-reserva-form-{{ $reserva->id }}" method="POST"
+                                            action="{{ route('reserva.destroy', $reserva->id) }}"
+                                            style="display:none;">
+                                            @csrf
+                                            @method('DELETE')
+                                        </form>
+                                    </div>
                                 </div>
-                            </div>
-                        @endforeach
-                    </div>
-
+                            @endforeach
+                        </div>
                     @else
                         <span
                             class="relative inline-flex items-center justify-center px-3 py-5 text-lg font-bold text-gray-700 mt-3
@@ -302,45 +304,55 @@
             <div class="flex justify-between items-center mb-6">
                 <h2 class="text-lg lg:text-2xl font-bold text-gray-900 dark:text-white">Discussion
                     ({{ $establishment->reviews->count() }})</h2>
+                <form action="{{ url('ruta_a_tu_vista') }}" method="GET">
+                    <div class="mb-4">
+                        <label for="sort_by" class="text-lg text-gray-900 dark:text-white">Sort by:</label>
+                        <select name="sortReviews" id="sortReviews"
+                            class="form-control bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                            <option value="votes_desc">Most Votes</option>
+                            <option value="votes_asc">Least Votes</option>
+                            <option value="rating_desc">Highest Rating</option>
+                            <option value="rating_asc">Lowest Rating</option>
+                        </select>
+                    </div>
+                </form>
             </div>
-            @if (Auth::check())
-                @php
+            <div id="reviewsContainer">
+                <!-- Aquí se cargan las reseñas -->
+            </div>
 
-                @endphp
-
-                @if ($reservation || Auth::user()->role === 'Admin')
-                    <form action="{{ route('post_review') }}" method="POST" class="mb-6">
-                        @csrf
-                        <div
-                            class="py-2 px-4 mb-4 bg-white rounded-lg rounded-t-lg border border-gray-200 dark:bg-gray-800 dark:border-gray-700">
-                            <textarea id="comment" rows="6" name="comment"
-                                class="px-0 w-full text-sm text-gray-900 border-0 focus:ring-0 focus:outline-none dark:text-white dark:placeholder-gray-400 dark:bg-gray-800"
-                                placeholder="Write a comment..." required></textarea>
-                        </div>
-                        <div class="flex items-center justify-start mb-4">
-                            <label for="rating"
-                                class="text-sm font-medium text-gray-900 dark:text-white">Rating:</label>
-                            <select id="rating" name="rating"
-                                class="text-normal text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 ml-2 pl-2">
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="3">3</option>
-                                <option value="4">4</option>
-                                <option value="5">5</option>
-                            </select>
-                        </div>
-                        <input type="hidden" name="establishment_id" value="{{ $establishment->id }}">
-                        <input type="hidden" name="reserva_id" value="{{ $reservaId }}">
-                        <button
-                            class="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-purple-500 to-pink-500 group-hover:from-purple-500 group-hover:to-pink-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-purple-200 dark:focus:ring-purple-800"
-                            type="submit">
-                            <span
-                                class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
-                                Post
-                            </span>
-                        </button>
-                    </form>
-                @endif
+            @if (Auth::check() && ($reservation || Auth::user()->role === 'Admin'))
+                <form action="{{ route('post_review') }}" method="POST" class="mb-6">
+                    @csrf
+                    <div
+                        class="py-2 px-4 mb-4 bg-white rounded-lg rounded-t-lg border border-gray-200 dark:bg-gray-800 dark:border-gray-700">
+                        <textarea id="comment" rows="6" name="comment"
+                            class="px-0 w-full text-sm text-gray-900 border-0 focus:ring-0 focus:outline-none dark:text-white dark:placeholder-gray-400 dark:bg-gray-800"
+                            placeholder="Write a comment..." required></textarea>
+                    </div>
+                    <div class="flex items-center justify-start mb-4">
+                        <label for="rating"
+                            class="text-sm font-medium text-gray-900 dark:text-white">Rating:</label>
+                        <select id="rating" name="rating"
+                            class="text-normal text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 ml-2 pl-2">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                        </select>
+                    </div>
+                    <input type="hidden" name="establishment_id" value="{{ $establishment->id }}">
+                    <input type="hidden" name="reserva_id" value="{{ $reservaId }}">
+                    <button
+                        class="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-purple-500 to-pink-500 group-hover:from-purple-500 group-hover:to-pink-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-purple-200 dark:focus:ring-purple-800"
+                        type="submit">
+                        <span
+                            class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
+                            Post
+                        </span>
+                    </button>
+                </form>
             @endif
 
 
@@ -416,16 +428,20 @@
                     <div class="flex items-center mt-4 space-x-4">
                         <p class="text-gray-500 dark:text-gray-400 text-sm">Did you find it useful?</p>
                         <button class="text-green-500 hover:text-green-700">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 -rotate-90" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 -rotate-90" fill="none"
+                                viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M14 5l7 7m0 0l-7 7m7-7H3" />
                             </svg>
                         </button>
                         <button class="text-red-500 hover:text-red-700">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 -rotate-90" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 -rotate-90" fill="none"
+                                viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M10 19l-7-7m0 0l7-7m-7 7h18" />
                             </svg>
                         </button>
-                        <p class="text-gray-500 dark:text-gray-400 text-sm">{{$review->votes}} found it useful</p>
+                        <p class="text-gray-500 dark:text-gray-400 text-sm">{{ $review->votes }} found it useful</p>
                     </div>
                 </article>
             @endforeach
