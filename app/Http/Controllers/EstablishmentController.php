@@ -60,7 +60,15 @@ class EstablishmentController extends Controller
 
     public function create()
     {
-        return view('establishment.create');
+        if (Auth::user()->role !== 'Admin' && Auth::user()->role !== 'Business') {
+            return redirect('/')->with('alert', [
+                'type' => 'danger',
+                'title' => 'Error!',
+                'message' => 'You dont are authorize to enter this page!'
+            ]);
+        }
+    
+        return view('establishments.create');
     }
 
     public function edit(Establishment $establishment)

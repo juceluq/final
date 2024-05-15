@@ -29,7 +29,7 @@ class Auth
         $routeName = $request->route()->getName();
 
         switch ($routeName) {
-            case 'mybusinesses':
+            case 'mybusinesses' || 'establishments.edit' || 'establishments.destroy' || 'establishments.create':
                 if (!in_array($user->role, ['Business', 'Admin'])) {
                     return redirect('/')->with('alert', [
                         'type' => 'danger',

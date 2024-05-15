@@ -25,8 +25,6 @@ Route::middleware('auth')->group(function () {
     Route::post('/logout', [SessionController::class, 'destroy'])->name('logout');
     Route::get('/establishments/create', [EstablishmentController::class, 'create'])->name('establishments.create');
     Route::post('/establishments', [EstablishmentController::class, 'store'])->name('establishments.store');
-    Route::delete('/establishments/{establishment}', [EstablishmentController::class, 'destroy'])->name('establishments.destroy');
-    Route::get('establishments/{establishment}/edit', [EstablishmentController::class, 'edit'])->name('establishments.edit');
     Route::put('establishments/{establishment}', [EstablishmentController::class, 'update'])->name('establishments.update');
     Route::post('/reviews', [ReviewController::class, 'store'])->name('post_review');
     Route::delete('/reviews/{review}', [ReviewController::class, 'destroy'])->name('reviews.destroy');
@@ -39,9 +37,11 @@ Route::get('/establishments/{establishment}', [EstablishmentController::class, '
 Route::middleware(['auth', Auth::class])->group(function () {
     //! ruta para saber quien puede acceder a estas páginas
     Route::post('/reservar', [ReservaController::class, 'store'])->name('reserva.store');
-    Route::get('/myreserves', [ReservaController::class, 'index'])->name('myreserves');
     Route::delete('/reserva/{id}', [ReservaController::class, 'destroy'])->name('reserva.destroy');
+    Route::delete('/establishments/{establishment}', [EstablishmentController::class, 'destroy'])->name('establishments.destroy');
+    Route::get('establishments/{establishment}/edit', [EstablishmentController::class, 'edit'])->name('establishments.edit');
     Route::get('/mybusinesses', [EstablishmentController::class, 'mybusinesses'])->name('mybusinesses');
+    Route::get('/myreserves', [ReservaController::class, 'index'])->name('myreserves');
 });
 
 
