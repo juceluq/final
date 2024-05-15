@@ -197,7 +197,7 @@
                                             class="font-normal text-base text-gray-700 dark:text-gray-300">{{ $reserva->formatted_end_date }}</span>
                                     </p>
                                     <button
-                                        class="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-purple-500 to-pink-500 group-hover:from-purple-500 group-hover:to-pink-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-purple-200 dark:focus:ring-purple-800 type="button"
+                                        class="relative inline-flex items-center justify-center p-0.5 mb-2 mt-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-purple-500 to-pink-500 group-hover:from-purple-500 group-hover:to-pink-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-purple-200 dark:focus:ring-purple-800 type="button"
                                         onclick="confirmDelete(this)"
                                         data-form-id="delete-reserva-form-{{ $reserva->id }}"">
                                         <span
@@ -304,7 +304,7 @@
 
                 @endphp
 
-                @if ($reservation || Auth::user()->role === 'Admin' || Auth::user()?->id == $establishment->user_id)
+                @if ($reservation || Auth::user()->role === 'Admin')
                     <form action="{{ route('post_review') }}" method="POST" class="mb-6">
                         @csrf
                         <div

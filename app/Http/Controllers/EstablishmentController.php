@@ -49,7 +49,7 @@ class EstablishmentController extends Controller
                 ->where('user_id', Auth::user()->id)
                 ->first();
 
-                
+
 
             return view('establishment.establishment', compact('establishment', 'alreadyReserved', 'reservas', 'reviews', 'averageRating', 'reservation', 'reservaId'));
         } else {
