@@ -29,7 +29,6 @@ class ReviewController extends Controller
             $review->reserva_id = $request->reserva_id;
             $review->rating = $request->rating;
             $review->review_date = now();
-            $review->votes = 0;
             $review->save();
 
             return back()->with('alert', [
