@@ -359,7 +359,11 @@
                         @if (Auth::user()?->role === 'Admin' ||
                                 Auth::user()?->id == $review->user_id ||
                                 Auth::user()?->id == $establishment->user_id)
-                            <button id="dropdownComment1Button" data-dropdown-toggle="dropdownComment1"
+                            @php
+                                $dropdownId = 'dropdownComment' . $loop->index;
+                                $buttonId = 'dropdownCommentButton' . $loop->index;
+                            @endphp
+                            <button id="{{ $buttonId }}" data-dropdown-toggle="{{ $dropdownId }}"
                                 class="inline-flex items-center p-2 text-sm font-medium text-center text-gray-500 dark:text-gray-400 bg-white rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-50 dark:bg-gray-900 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
                                 type="button">
                                 <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
@@ -369,24 +373,30 @@
                                 </svg>
                                 <span class="sr-only">Comment settings</span>
                             </button>
-                            <div id="dropdownComment1"
+                            <div id="{{ $dropdownId }}"
                                 class="hidden z-10 w-36 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600">
                                 <ul class="py-1 text-sm text-gray-700 dark:text-gray-200"
                                     aria-labelledby="dropdownMenuIconHorizontalButton">
                                     <li>
                                         <a href="#"
-                                            class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Remove</a>
+                                            class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Edit</a>
                                     </li>
                                     <li>
-                                        <a href="#"
-                                            class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Edit</a>
+                                        <form id="delete-form-{{ $review->id }}" method="POST"
+                                              action="{{ route('reviews.destroy', $review->id) }}">
+                                            @csrf
+                                            @method('DELETE')
+                                            <a onclick="event.preventDefault(); document.getElementById('delete-form-{{ $review->id }}').submit();"
+                                               class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white text-red-500 font-bold cursor-pointer">Delete</a>
+                                        </form>
                                     </li>
                                 </ul>
                             </div>
                         @endif
                     </footer>
                     <p class="text-gray-500 dark:text-gray-400">{{ $review->comment }}</p>
-                    <p class="text-gray-500 dark:text-gray-400 text-sm mt-4 font-bold">Rating: {{ $review->rating }}/5</p>
+                    <p class="text-gray-500 dark:text-gray-400 text-sm mt-4 font-bold">Rating: {{ $review->rating }}/5
+                    </p>
                     <div class="flex items-center mt-4 space-x-4">
                         <button type="button"
                             class="flex items-center text-sm text-gray-500 hover:underline dark:text-gray-400 font-medium">

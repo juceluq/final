@@ -29,6 +29,7 @@ Route::middleware('auth')->group(function () {
     Route::get('establishments/{establishment}/edit', [EstablishmentController::class, 'edit'])->name('establishments.edit');
     Route::put('establishments/{establishment}', [EstablishmentController::class, 'update'])->name('establishments.update');
     Route::post('/reviews', [ReviewController::class, 'store'])->name('post_review');
+    Route::delete('/reviews/{review}', [ReviewController::class, 'destroy'])->name('reviews.destroy');
 });
 
 Route::get('/establishments/{establishment}', [EstablishmentController::class, 'show'])->name('establishments.show');

@@ -6,6 +6,7 @@ use App\Models\Review;
 use Exception;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
 class ReviewController extends Controller
@@ -50,5 +51,18 @@ class ReviewController extends Controller
                 'message' => 'ERROR' . $e->getMessage(),
             ]);
         }
+    }
+
+    public function destroy(Review $review)
+    {
+        if (Auth::check($review->delete())) {
+        }
+
+
+        return redirect()->back()->with('alert', [
+            'type' => 'Success',
+            'title' => 'Success!',
+            'message' => 'Your post has been deleted.',
+        ]);
     }
 }
