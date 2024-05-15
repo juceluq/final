@@ -68,7 +68,7 @@ class EstablishmentController extends Controller
             ]);
         }
 
-        return view('establishments.create');
+        return view('establishment.create');
     }
 
     public function edit(Establishment $establishment)
