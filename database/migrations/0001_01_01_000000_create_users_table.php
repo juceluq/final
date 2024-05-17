@@ -19,6 +19,7 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->enum('role', ['Client', 'Business', 'Admin']);
+            $table->rememberToken();
             $table->timestamps();
         });
         Schema::create('sessions', function (Blueprint $table) {
@@ -29,6 +30,11 @@ return new class extends Migration
             $table->text('device')->nullable();
             $table->text('payload');
             $table->integer('last_activity');
+        });
+        Schema::create('password_reset_tokens', function (Blueprint $table) {
+            $table->string('email')->primary();
+            $table->string('token');
+            $table->timestamp('created_at')->nullable();
         });
     }
 

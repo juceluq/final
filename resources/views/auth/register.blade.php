@@ -64,10 +64,6 @@
                 </select>
 
             </div>
-            <div class="text-sm mt-4">
-                <p class="text-gray-800 dark:text-gray-200">Already registered? <a href="/login"
-                        class="text-indigo-600 hover:text-indigo-800 dark:hover:text-indigo-400">Login</a></p>
-            </div>
             <div class="flex items-center justify-between mt-4">
                 <button type="submit"
                     class="bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 text-white font-bold py-2 px-4 rounded-md focus:shadow-outline">

@@ -37,13 +37,21 @@ Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $requ
     $user = User::findOrFail($request->route('id'));
 
     if ($user->hasVerifiedEmail()) {
-        return redirect('/');
+        return redirect('/')->with('alert', [
+            'type' => 'danger',
+            'title' => 'Error!',
+            'message' => 'This user has been verified previously.'
+        ]);
     }
 
     $user->markEmailAsVerified();
     event(new Verified($user));
 
-    return redirect('/');
+    return redirect('/')->with('alert', [
+        'type' => 'success',
+        'title' => 'Sucess!',
+        'message' => 'Your email has been verified!'
+    ]);
 })->name('verification.verify');
 Route::get('/establishments/{establishment}', [EstablishmentController::class, 'show'])->name('establishments.show');
 Route::post('/vote', [ReviewController::class, 'vote']);
