@@ -196,4 +196,13 @@ class EstablishmentController extends Controller
             'message' => 'You are not authorized to delete this establishment!'
         ]);
     }
+
+    public function search(Request $request){
+        $query = $request->input('query');
+        $establishments = Establishment::where('name', 'LIKE', "%$query%")
+                            ->orWhere('description', 'LIKE', "%$query%")
+                            ->get();
+
+        return view('index', compact('establishments'));
+    }
 }

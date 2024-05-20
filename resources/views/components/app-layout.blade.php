@@ -20,30 +20,49 @@
     <header class="bg-white dark:bg-gray-900 py-4 shadow m-4 rounded-lg">
         <div class="container mx-auto flex justify-between items-center px-6">
             <a class="text-xl font-bold text-gray-700 dark:text-gray-300" href={{ route('index') }}>ReservaSphere</a>
-            <div class="flex">
+            
+            <div class="flex w-full justify-center">
+                <form class="flex-grow max-w-xl" action="{{ route('search') }}" method="POST">
+                    @csrf
+                    <div class="relative">
+                        <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                            <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
+                                 xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                      stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
+                            </svg>
+                        </div>
+                        <input type="search" id="default-search" name="query"
+                               class="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-indigo-500 dark:focus:border-indigo-500"
+                               placeholder="Search Establishments" required />
+                        <button type="submit"
+                                class="text-white absolute end-2.5 bottom-2.5 bg-indigo-600 dark:bg-indigo-700 hover:bg-indigo-800 focus:ring-4 font-medium rounded-lg text-sm px-4 py-2 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm dark:text-gray-300 border border-gray-300 dark:border-gray-600">Search</button>
+                    </div>
+                </form>
+            </div>
+    
+            <div class="flex items-center space-x-4">
                 @auth
+                    <a href="/establishments/create"
+                       class="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-purple-600 to-blue-500 group-hover:from-purple-600 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800">
+                        <span
+                            class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
+                            Create
+                        </span>
+                    </a>
                     <div class="relative inline-block text-left">
                         <button id="dropdownInformationButton" data-dropdown-toggle="dropdownInformation"
-                            class="text-gray-700 dark:text-gray-300 font-bold rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center z-auto"
-                            type="button">
+                                class="text-gray-700 dark:text-gray-300 font-bold rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center z-auto"
+                                type="button">
                             {{ Auth::user()->username }}
                             <svg class="w-2.5 h-2.5 ml-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                                fill="none" viewBox="0 0 10 6">
+                                 fill="none" viewBox="0 0 10 6">
                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="m1 1 4 4 4-4" />
+                                      d="m1 1 4 4 4-4" />
                             </svg>
                         </button>
-                        @if (Auth::user()->role == 'Admin' || Auth::user()->role == 'Business')
-                            <a href="/establishments/create"
-                                class="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-purple-600 to-blue-500 group-hover:from-purple-600 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800">
-                                <span
-                                    class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
-                                    Create
-                                </span>
-                            </a>
-                        @endif
                         <div id="dropdownInformation"
-                            class="absolute z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600">
+                             class="absolute z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600">
                             <div class="px-4 py-3 text-sm text-gray-700 dark:text-gray-300">
                                 <div>{{ Auth::user()->name }}</div>
                                 <div class="font-medium truncate">{{ Auth::user()->email }}</div>
@@ -53,14 +72,14 @@
                                 @if (Auth::user()->role == 'Admin' || Auth::user()->role == 'Client')
                                     <li>
                                         <a href={{ route('myreserves') }}
-                                            class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">My
+                                           class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">My
                                             reserves</a>
                                     </li>
                                 @endif
                                 @if (Auth::user()->role == 'Admin' || Auth::user()->role == 'Business')
                                     <li>
                                         <a href={{ route('mybusinesses') }}
-                                            class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">My
+                                           class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">My
                                             business</a>
                                     </li>
                                 @endif
@@ -68,22 +87,22 @@
                             <form action="/logout" method="POST">
                                 @csrf
                                 <button type="submit"
-                                    class="rounded-b-lg block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Logout</button>
+                                        class="rounded-b-lg block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Logout</button>
                             </form>
                         </div>
                     </div>
                 @else
                     <a href={{ route('login') }}
-                        class="text-gray-700 dark:text-gray-300 font-bold rounded-lg text-lg px-5 inline-flex items-center">Login</a>
+                       class="text-gray-700 dark:text-gray-300 font-bold rounded-lg text-lg px-5 inline-flex items-center">Login</a>
                 @endauth
                 <button id="theme-toggle" type="button"
-                    class="w-10 h-10 bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 rounded-full shadow flex items-center justify-center text-white transition-all">
+                        class="w-10 h-10 bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 rounded-full shadow flex items-center justify-center text-white transition-all ml-4">
                     <svg id="theme-toggle-dark-icon" class="hidden w-6 h-6" fill="currentColor" viewBox="0 0 20 20"
-                        xmlns="http://www.w3.org/2000/svg">
+                         xmlns="http://www.w3.org/2000/svg">
                         <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
                     </svg>
                     <svg id="theme-toggle-light-icon" class="hidden w-6 h-6" fill="currentColor" viewBox="0 0 20 20"
-                        xmlns="http://www.w3.org/2000/svg">
+                         xmlns="http://www.w3.org/2000/svg">
                         <path
                             d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"
                             fill-rule="evenodd" clip-rule="evenodd"></path>
@@ -92,6 +111,8 @@
             </div>
         </div>
     </header>
+    
+    
 
     @if (session()->has('alert'))
         <x-alert type="{{ session('alert')['type'] }}" class="my-2 mx-4" title="{{ session('alert')['title'] }}">

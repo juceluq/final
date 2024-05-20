@@ -53,8 +53,10 @@ Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $requ
         'message' => 'Your email has been verified!'
     ]);
 })->name('verification.verify');
+
 Route::get('/establishments/{establishment}', [EstablishmentController::class, 'show'])->name('establishments.show');
 Route::post('/vote', [ReviewController::class, 'vote']);
+Route::post('/search', [EstablishmentController::class, 'search'])->name('search');
 
 Route::middleware(['auth', Auth::class])->group(function () {
     //! ruta para saber quien puede acceder a estas páginas

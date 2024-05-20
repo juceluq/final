@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('votes', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(User::class)->onDelete('cascade');
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->foreignIdFor(Review::class)->onDelete('cascade');
             $table->boolean('type');
             $table->timestamps();
