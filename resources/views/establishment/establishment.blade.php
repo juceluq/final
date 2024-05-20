@@ -430,9 +430,8 @@
                             </button>
                         @endif
 
-                        <p class="text-gray-500 dark:text-gray-400 text-sm" id="votes-{{ $review->id }}">
-                            {{ count($review->votes->where('type', '1')) - count($review->votes->where('type', '0')) }}
-                            found it useful</p>
+                        <p class="text-gray-500 dark:text-gray-400 text-sm" id="votes-' . $review->id . '">
+                            {{ $review->useful_votes - $review->not_useful_votes }} found it useful</p>
                     </div>
 
                 </article>

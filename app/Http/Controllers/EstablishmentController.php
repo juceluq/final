@@ -28,9 +28,16 @@ class EstablishmentController extends Controller
     public function show($id)
     {
         $establishment = Establishment::findOrFail($id);
-        $reviews = $establishment->reviews->sortByDesc(function ($review) {
-            return $review->votes->count();
-        });        
+        $reviews = $establishment->reviews()
+            ->withCount(['votes as useful_votes' => function ($query) {
+                $query->where('type', '1');
+            }, 'votes as not_useful_votes' => function ($query) {
+                $query->where('type', '0');
+            }])
+            ->get()
+            ->sortByDesc(function ($review) {
+                return $review->useful_votes - $review->not_useful_votes;
+            });
         $averageRating = $reviews->avg('rating');
         if (Auth::check()) {
             $user = Auth::user();
@@ -197,11 +204,12 @@ class EstablishmentController extends Controller
         ]);
     }
 
-    public function search(Request $request){
+    public function search(Request $request)
+    {
         $query = $request->input('query');
         $establishments = Establishment::where('name', 'LIKE', "%$query%")
-                            ->orWhere('description', 'LIKE', "%$query%")
-                            ->get();
+            ->orWhere('description', 'LIKE', "%$query%")
+            ->get();
 
         return view('index', compact('establishments'));
     }
