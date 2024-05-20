@@ -53,7 +53,7 @@ class DatabaseSeeder extends Seeder
                 'description' => "Description for Business $index",
                 'location' => "Location for Business $index",
                 'category' => "Category for Business $index",
-                'price' => 10.00
+                'price' => rand(100, 500)
             ]);
 
             foreach (range(1, 3) as $imgIndex) {
@@ -68,7 +68,7 @@ class DatabaseSeeder extends Seeder
                     'start_date' => now()->addDays($reservaIndex * 10),
                     'end_date' => now()->addDays($reservaIndex * 10 + 5),
                     'phone' => rand(600000000, 699999999),
-                    'price' => rand(100, 500)
+                    'price' => rand(2000, 5000)
                 ]);
             }
 
