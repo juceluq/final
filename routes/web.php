@@ -71,6 +71,17 @@ Route::middleware(['auth', Auth::class])->group(function () {
 
 //! Ruta para la página de inicio
 Route::get('/', [EstablishmentController::class, 'index'])->name('index');
+Route::get('/about', function () {
+    return view('about');
+})->name('about');
+
+Route::get('/privacy', function () {
+    return view('privacy');
+})->name('privacy');
+
+Route::get('/licensing', function () {
+    return view('licensing');
+})->name('licensing');
 
 //! Ruta para la verificación de correo electrónico
 Route::get('/email/verify', function () {
