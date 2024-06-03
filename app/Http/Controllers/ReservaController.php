@@ -59,7 +59,7 @@ class ReservaController extends Controller
             $reserva->price = $price;
             $reserva->save();
 
-            return redirect()->route('index')->with('alert', [
+            return redirect()->back()->with('alert', [
                 'type' => 'success',
                 'title' => 'Success!',
                 'message' => 'Reserve made correctly!'
