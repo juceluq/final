@@ -130,41 +130,44 @@ class EstablishmentController extends Controller
             'images' => 'sometimes|array|max:3',
             'images.*' => 'image|max:15000',
         ]);
-
-        $establishment->update($validatedData);
-
+    
         $folderName = 'IMG_' . $establishment->id;
         $folderPath = 'public/images/' . $folderName;
-
+    
         if (!Storage::exists($folderPath)) {
             Storage::makeDirectory($folderPath);
         }
-
+    
         $totalImages = 0;
-
+    
         if ($request->hasFile('images')) {
             $existingImages = $establishment->images;
-
+    
             foreach ($existingImages as $image) {
                 Storage::delete('public/' . $image->filename);
                 $image->delete();
             }
-
+    
             foreach ($request->file('images') as $index => $file) {
                 $newFileName = ($index + 1) . '.' . $file->extension();
                 $file->storeAs($folderPath, $newFileName);
                 $establishment->images()->create(['filename' => $folderName . '/' . $newFileName]);
                 $totalImages++;
             }
+        } else {
+            // No se han subido nuevas imágenes, conservamos las existentes
+            $totalImages = $establishment->images()->count();
         }
-
+    
         for ($i = $totalImages + 1; $i <= 3; $i++) {
             $defaultImageFile = 'default/default.jpg';
             $defaultFileName = $i . '.jpg';
             Storage::copy('public/images/' . $defaultImageFile, $folderPath . '/' . $defaultFileName);
             $establishment->images()->create(['filename' => $folderName . '/' . $defaultFileName]);
         }
-
+    
+        $establishment->update($validatedData);
+    
         return redirect()->route('index')->with('alert', [
             'type' => 'success',
             'title' => 'Success!',
