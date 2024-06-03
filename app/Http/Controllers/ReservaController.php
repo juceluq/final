@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\CancelReservaEmail;
+use App\Mail\ReservaEmail;
 use App\Models\Establishment;
 use App\Models\Reserva;
 use DateTime;
@@ -9,6 +11,7 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 
 class ReservaController extends Controller
 {
@@ -58,7 +61,8 @@ class ReservaController extends Controller
             $reserva->phone = $validatedData['phone'];
             $reserva->price = $price;
             $reserva->save();
-
+            $this->sendEmailReserva($reserva);
+            
             return redirect()->back()->with('alert', [
                 'type' => 'success',
                 'title' => 'Success!',
@@ -75,12 +79,28 @@ class ReservaController extends Controller
         }
     }
 
+    public function sendEmailReserva($reserva)
+    {
+        Mail::to(Auth::user()->email)->send(new ReservaEmail($reserva));
+
+        return response()->json(['message' => 'Correo enviado correctamente.']);
+    }
+
+    public function sendEmailCancelReserva($reserva)
+    {
+        Mail::to($reserva->user->email)->send(new CancelReservaEmail($reserva));
+
+        return response()->json(['message' => 'Correo enviado correctamente.']);
+    }
+
+
     public function destroy($id)
     {
         $reserva = Reserva::findOrFail($id);
 
         if ($reserva->user_id === auth()->id() || auth()->user()->role === 'Admin' || auth()->user()->role === 'Business'){ 
             $reserva->delete();
+            $this->sendEmailCancelReserva($reserva);
             return back()->with('alert', [
                 'type' => 'success',
                 'title' => 'Success!',
