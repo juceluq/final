@@ -14,9 +14,42 @@ class EstablishmentController extends Controller
 {
     public function index()
     {
-        $establishments = Establishment::all();
+        if (Auth::check()) {
+            $user = Auth::user();
+    
+            // Verificar si el usuario no es administrador
+            if ($user->role != 'Admin') {
+    
+                // Obtener los IDs de los establecimientos que el usuario ha reservado
+                $reservedEstablishmentIds = $user->reservas->pluck('establishment_id')->toArray();
+    
+                // Obtener los establecimientos que pertenecen al usuario y excluir los que ha reservado
+                $establishments = Establishment::where('user_id', $user->id)
+                    ->whereNotIn('id', $reservedEstablishmentIds)
+                    ->get();
+    
+                // Obtener los establecimientos de otros usuarios que no han sido reservados por el usuario autenticado
+                $otherEstablishments = Establishment::where('user_id', '!=', $user->id)
+                    ->whereNotIn('id', $reservedEstablishmentIds)
+                    ->get();
+    
+                // Combinar las dos colecciones
+                $establishments = $establishments->merge($otherEstablishments);
+            } else {
+                // Si el usuario es administrador, obtener todos los establecimientos
+                $establishments = Establishment::all();
+            }
+        } else {
+            // Si el usuario no está autenticado, obtener todos los establecimientos
+            $establishments = Establishment::all();
+        }
+    
         return view('index', compact('establishments'));
     }
+    
+
+
+
 
     public function mybusinesses()
     {
