@@ -16,23 +16,23 @@ class EstablishmentController extends Controller
     {
         if (Auth::check()) {
             $user = Auth::user();
-    
+
             // Verificar si el usuario no es administrador
             if ($user->role != 'Admin') {
-    
+
                 // Obtener los IDs de los establecimientos que el usuario ha reservado
                 $reservedEstablishmentIds = $user->reservas->pluck('establishment_id')->toArray();
-    
+
                 // Obtener los establecimientos que pertenecen al usuario y excluir los que ha reservado
                 $establishments = Establishment::where('user_id', $user->id)
                     ->whereNotIn('id', $reservedEstablishmentIds)
                     ->get();
-    
+
                 // Obtener los establecimientos de otros usuarios que no han sido reservados por el usuario autenticado
                 $otherEstablishments = Establishment::where('user_id', '!=', $user->id)
                     ->whereNotIn('id', $reservedEstablishmentIds)
                     ->get();
-    
+
                 // Combinar las dos colecciones
                 $establishments = $establishments->merge($otherEstablishments);
             } else {
@@ -43,10 +43,10 @@ class EstablishmentController extends Controller
             // Si el usuario no está autenticado, obtener todos los establecimientos
             $establishments = Establishment::all();
         }
-    
+
         return view('index', compact('establishments'));
     }
-    
+
 
 
 
@@ -55,8 +55,19 @@ class EstablishmentController extends Controller
     {
         $user = Auth::user();
         $establishments = Establishment::where('user_id', $user->id)->get();
+
+        // Verificar si no hay establecimientos
+        if ($establishments->isEmpty()) {
+            return redirect('/')->with('alert', [
+                'type' => 'danger',
+                'title' => 'Error!',
+                'message' => 'You don\'t have any businesses!'
+            ]);
+        }
+
         return view('mybusinesses', compact('establishments'));
     }
+
 
     public function show($id)
     {
@@ -130,24 +141,24 @@ class EstablishmentController extends Controller
             'images' => 'sometimes|array|max:3',
             'images.*' => 'image|max:15000',
         ]);
-    
+
         $folderName = 'IMG_' . $establishment->id;
         $folderPath = 'public/images/' . $folderName;
-    
+
         if (!Storage::exists($folderPath)) {
             Storage::makeDirectory($folderPath);
         }
-    
+
         $totalImages = 0;
-    
+
         if ($request->hasFile('images')) {
             $existingImages = $establishment->images;
-    
+
             foreach ($existingImages as $image) {
                 Storage::delete('public/' . $image->filename);
                 $image->delete();
             }
-    
+
             foreach ($request->file('images') as $index => $file) {
                 $newFileName = ($index + 1) . '.' . $file->extension();
                 $file->storeAs($folderPath, $newFileName);
@@ -158,16 +169,16 @@ class EstablishmentController extends Controller
             // No se han subido nuevas imágenes, conservamos las existentes
             $totalImages = $establishment->images()->count();
         }
-    
+
         for ($i = $totalImages + 1; $i <= 3; $i++) {
             $defaultImageFile = 'default/default.jpg';
             $defaultFileName = $i . '.jpg';
             Storage::copy('public/images/' . $defaultImageFile, $folderPath . '/' . $defaultFileName);
             $establishment->images()->create(['filename' => $folderName . '/' . $defaultFileName]);
         }
-    
+
         $establishment->update($validatedData);
-    
+
         return redirect()->route('index')->with('alert', [
             'type' => 'success',
             'title' => 'Success!',

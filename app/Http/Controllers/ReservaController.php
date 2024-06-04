@@ -22,19 +22,21 @@ class ReservaController extends Controller
         $establishments = Establishment::with(['reservas' => function ($query) use ($userId) {
             $query->where('user_id', $userId);
         }])->get();
-        return view('myreserves', compact('establishments'));
-    }
 
-    public function showReservations(Request $request)
-    {
-        $userId = auth()->id(); 
-        $establishmentId = $request->establishment_id;
+        // Filtrar los establecimientos para solo aquellos que tienen reservas
+        $filteredEstablishments = $establishments->filter(function ($establishment) {
+            return $establishment->reservas->isNotEmpty();
+        });
 
-        $reservations = Reserva::where('user_id', $userId)
-            ->where('establishment_id', $establishmentId)
-            ->get();
+        if ($filteredEstablishments->isEmpty()) {
+            return redirect('/')->with('alert', [
+                'type' => 'danger',
+                'title' => 'Error!',
+                'message' => 'You don\'t have any reserves!'
+            ]);
+        }
 
-        return view('myreserves', compact('reservations'));
+        return view('myreserves', ['establishments' => $filteredEstablishments]);
     }
 
 
@@ -62,7 +64,7 @@ class ReservaController extends Controller
             $reserva->price = $price;
             $reserva->save();
             $this->sendEmailReserva($reserva);
-            
+
             return redirect()->back()->with('alert', [
                 'type' => 'success',
                 'title' => 'Success!',
@@ -98,10 +100,10 @@ class ReservaController extends Controller
     {
         $reserva = Reserva::findOrFail($id);
 
-        if ($reserva->user_id === auth()->id() || auth()->user()->role === 'Admin' || auth()->user()->role === 'Business'){ 
+        if ($reserva->user_id === auth()->id() || auth()->user()->role === 'Admin' || auth()->user()->role === 'Business') {
             $reserva->delete();
             $this->sendEmailCancelReserva($reserva);
-            return back()->with('alert', [
+            return redirect('/')->with('alert', [
                 'type' => 'success',
                 'title' => 'Success!',
                 'message' => 'Your reserve has been canceled successfully!'
