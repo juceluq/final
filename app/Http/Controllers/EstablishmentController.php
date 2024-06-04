@@ -237,7 +237,7 @@ class EstablishmentController extends Controller
 
             $establishment->delete();
 
-            return back()->with('alert', [
+            return redirect('/')->with('alert', [
                 'type' => 'success',
                 'title' => 'Successful!',
                 'message' => 'Establishment and all associated images deleted successfully!'
