@@ -305,7 +305,7 @@
                 <h2 class="text-lg lg:text-2xl font-bold text-gray-900 dark:text-white">Discussion
                     ({{ $establishment->reviews->count() }})</h2>
             </div>
-            @if (Auth::check() && ($reservation || Auth::user()->role === 'Admin'))
+            @if (($reviews->where("user_id", Auth::user()->id)->where("establishment_id", $establishment->id)->count() == 0 ) && (Auth::check() && ($reservation || Auth::user()->role === 'Admin')))
                 <form action="{{ route('post_review') }}" method="POST" class="mb-6">
                     @csrf
                     <div

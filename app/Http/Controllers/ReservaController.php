@@ -22,21 +22,15 @@ class ReservaController extends Controller
         $establishments = Establishment::with(['reservas' => function ($query) use ($userId) {
             $query->where('user_id', $userId);
         }])->get();
+        if (count($establishments) == 0) {
+            return redirect('/')->with('alert', [
+                'type' => 'danger',
+                'title' => 'Error!',
+                'message' => 'You dont have reserves!'
+            ]);
+        }
         return view('myreserves', compact('establishments'));
     }
-
-    public function showReservations(Request $request)
-    {
-        $userId = auth()->id(); 
-        $establishmentId = $request->establishment_id;
-
-        $reservations = Reserva::where('user_id', $userId)
-            ->where('establishment_id', $establishmentId)
-            ->get();
-
-        return view('myreserves', compact('reservations'));
-    }
-
 
     public function store(Request $request)
     {
@@ -62,7 +56,7 @@ class ReservaController extends Controller
             $reserva->price = $price;
             $reserva->save();
             $this->sendEmailReserva($reserva);
-            
+
             return redirect()->back()->with('alert', [
                 'type' => 'success',
                 'title' => 'Success!',
@@ -98,7 +92,7 @@ class ReservaController extends Controller
     {
         $reserva = Reserva::findOrFail($id);
 
-        if ($reserva->user_id === auth()->id() || auth()->user()->role === 'Admin' || auth()->user()->role === 'Business'){ 
+        if ($reserva->user_id === auth()->id() || auth()->user()->role === 'Admin' || auth()->user()->role === 'Business') {
             $reserva->delete();
             $this->sendEmailCancelReserva($reserva);
             return back()->with('alert', [
